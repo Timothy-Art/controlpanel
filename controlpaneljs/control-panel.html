@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Control Panel</title>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/control-panel.css" rel="stylesheet">
+    <link href="css/side-panel.css" rel="stylesheet">
+    <link href="css/selectize.default.css" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/inputTypeNumberPolyfill.js"></script>
+    <script src="js/selectize.min.js"></script>
+    <script src="js/control-panel.js"></script>
+    <script src="js/side-panel.js"></script>
+    <script src="https://use.fontawesome.com/a222ab71e2.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <h2>Control Panel</h2>
+    <div id="side-nav-one" class="side-nav">
+      <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+      <div id="control-content"></div>
+    </div>
+    <h2>Hello</h2>
+    <p>some content</p>
+    <p>some content</p>
+    <p>some content</p>
+    <p>some content</p>
+    <p>some content</p>
+    <ul>
+      <li>bullets</li>
+      <li>bullets</li>
+      <li>bullets</li>
+      <li>bullets</li>
+    </ul>
+
+    <script>
+      var obj = '{"ManagerID": 0,"ID": 0,"Name": "Tim Art","DateCreated": "2017-01-06 11:17:00","ProfileName": "Profile_1","Tickers": ["AAPL US"],"Options": [{"Name": "Quality","Weight": 0.50,"Factors": [{"Name": "Profitability","Weight": 0.5,"Factors": [{"Name": "GPOA", "Weight": 0.2},{"Name": "ROA", "Weight": 0.2},{"Name": "CFOA", "Weight": 0.2},{"Name": "GMOR", "Weight": 0.2},{"Name": "Acc", "Weight": 0.2}]},{"Name": "Safety","Weight": 0.5,"Factors": [{"Name": "BAB", "Weight": 0.167},{"Name": "IVOL", "Weight": 0.167},{"Name": "LEV", "Weight": 0.167},{"Name": "O", "Weight": 0.167},{"Name": "Z", "Weight": 0.166},{"Name": "EVOL", "Weight": 0.166}]}]},{"Name": "Valuation","Weight": 0.25,"Factors": [{"Name": "Sales", "Weight": 0.25},{"Name": "Book", "Weight": 0.25},{"Name": "CF", "Weight": 0.25},{"Name": "Earnings","Weight": 0.25,"Factors": [{"Name": "P/E", "Weight": 0.5},{"Name": "P/E^T+1", "Weight": 0.5}]}]},{"Name": "Technical","Weight": 0.25,"Factors": [{"Name": "RSI", "Weight": 1}]}]}'
+      var controls = JSON.parse(obj);
+      var cp = new ControlPanel(controls, 'control-content');
+      $("#control-content").data('cp', cp);
+      cp.buildPanels();
+      console.log(cp);
+      cp.drawPanel("Main");
+      //console.log(cp.findParent('Profitability'));
+      //console.log(groups);
+      console.log($("#control-content").data('cp'));
+    </script>
+    <!--<div id="group-one" class='panel-item-group'>
+      <span class='panel-dir'>group-one > group-one > group-one</span>
+      <span class='panel-balance' alt="Balance Factors" title="Balance Factors"><i class="fa fa-sliders" aria-hidden=true></i></span>
+      <div id="hello" class="panel-item panel-group">
+        <div id="hello-destroy" class='panel-destroy' alt='Remove Factor' title='Remove Factor'>&#10006;</div>
+        <div id="hello-lock" class='panel-lock' alt='Lock Factor' title='Lock Factor'><i class="fa fa-unlock-alt" aria-hidden="true"></i></div>
+        <label id="hello-slider-label" for='hello-slider'><i class="fa fa-plus-circle" aria-hidden="true"></i>Hello</label>
+        <input id="hello-slider" class="panel-slider" type="range" max="100" min="0"
+          name="hello-slider" value="50" step='1'>
+        <input id="hello-slider-num" class="slider-num" type="text" value="50"
+          min="0" max="100">
+        <script>
+          var number = document.getElementById("hello-slider-num");
+          inputTypeNumberPolyfill.polyfillElement(number);
+        </script>
+      </div>
+      <div class="panel-item panel-add">
+        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+        <span class="add-content">
+          <div class="title">Name and Weight:</div>
+          <hr/>
+          <form>
+            <input id="f_4" type="text" placeholder="Group Name" style="width:135px"/>
+            <input id="f_5" type="text" placeholder="Weight" style="width:65px"/>
+            <br/>
+            <input id='f_6' type="button" name="next" value="Next"/>
+          </form>
+        </span>
+      </div>
+      <div class="panel-item panel-add">
+        <i class="fa fa-plus-square-o" aria-hidden="true"></i>
+        <span class="add-content">
+          <div class="title">Add a New Control:</div>
+          <hr/>
+          <form>
+            <input id="r_1" type="radio" name="group" value="group" checked/><label for="r_1">Group</label>
+            <input id="r_2" type="radio" name="group" value="factor"/><label for="r_2">Factor</label>
+            <br/>
+            <input id='f_3' type="button" name="next" value="Next"/>
+          </form>
+        </span>
+      </div>
+      <div id="world" class="panel-item">
+        <div id='world-destroy' class='panel-destroy' alt='Remove Factor' title='Remove Factor'>&#10006;</div>
+        <div id="world-lock" class='panel-lock' alt='Lock Factor' title='Lock Factor'><i class="fa fa-unlock-alt" aria-hidden="true"></i></div>
+        <label id="world-slider-label" for='world-slider'>World</label>
+        <input id="world-slider" class="panel-slider" type="range" max="100" min="0"
+          name="world-slider" value="0">
+        <input id="world-slider-num" class="slider-num" type="text" value="0"
+          min="0" max="100">
+        <script>
+          var number = document.getElementById("world-slider-num");
+          inputTypeNumberPolyfill.polyfillElement(number);
+        </script>
+      </div>
+      <div id="test" class="panel-item">
+        <div id="test-destroy" class='panel-destroy' alt='Remove Factor' title='Remove Factor'>&#10006;</div>
+        <div id="test-lock" class='panel-lock' alt='Lock Factor' title='Lock Factor'><i class="fa fa-unlock-alt" aria-hidden="true"></i></div>
+        <label id="test-slider-label" for='test-slider'>Test</label>
+        <input id="test-slider" class="panel-slider" type="range" max="100" min="0"
+          name="test-slider" value="50">
+        <input id="test-slider-num" class="slider-num" type="text" value="50"
+          min="0" max="100">
+        <script>
+          var number = document.getElementById("test-slider-num");
+          inputTypeNumberPolyfill.polyfillElement(number);
+        </script>
+      </div>
+    </div>-->
+  </body>
+</html>

@@ -1,0 +1,408 @@
+h2 {
+  font-weight: 200;
+}
+
+.panel-item>.panel-slider {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  padding: 0;
+  background: transparent; /* Otherwise white in Chrome */
+  overflow: hidden;
+}
+
+.panel-item>.panel-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+.panel-item>.panel-slider:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+.panel-item>.panel-slider::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.panel-item>.panel-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: -1000px 0 0px 1000px #33cbee;
+}
+.panel-item>.panel-slider:disabled::-webkit-slider-thumb {
+  box-shadow: -140px 0 0px 140px #0b768e;
+  background: #bbbbbb;
+}
+
+/* All the same stuff for Firefox */
+.panel-item>.panel-slider::-moz-range-thumb {
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: #ffffff;
+  border-radius: 0px;
+  cursor: pointer;
+  box-shadow: none;
+}
+.panel-item>.panel-slider:disabled::-moz-range-thumb{
+  background: #bbbbbb;
+}
+
+/* All the same stuff for IE */
+.panel-item>.panel-slider::-ms-thumb {
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: #ffffff;
+  cursor: pointer;
+  box-shadow: none;
+}
+.panel-item>.panel-slider:disabled::-ms-thumb{
+  background: #bbbbbb;
+}
+
+.panel-item>.panel-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: #901155;
+  border: none;
+}
+
+.panel-item>.panel-slider::-moz-range-progress {
+  cursor: pointer;
+  height: 20px;
+  background-color: #33cbee;
+  border: none;
+}
+.panel-item>.panel-slider:disabled::-moz-range-progress {
+  background-color: #0b768e;
+}
+
+.panel-item>.panel-slider::-moz-range-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: #901155;
+  border: none;
+}
+
+.panel-item>.panel-slider::-ms-track {
+  width: 100%;
+  height: 20px;
+  margin-top: -5px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.panel-item>.panel-slider::-ms-fill-lower {
+  height: 100%;
+  background: #33cbee;
+}
+.panel-item>.panel-slider:disabled::-ms-fill-lower {
+  background: #0b768e;
+}
+
+.panel-item>.panel-slider::-ms-fill-upper {
+  height: 100%;
+  background: #901155;
+}
+
+.panel-item-group{
+  background-color: #901155;
+  padding: 5px 10px 5px 5px;
+  width: 100%;
+  max-width: 530px;
+  max-height: 600px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  margin-left: 0px;
+  transition: all 0.2s ease-in-out;
+}
+.panel-item-group.active{
+  margin-left: 0;
+}
+.panel-item {
+  background-color: #ff4488;
+  margin: 0;
+  display: inline-block;
+  color: #f6f6f6;
+  font-weight: 200;
+  font-size: 14px;
+  width: 100%;
+  max-width: 500px;
+  border: solid 1px #901155;
+  border-radius: 1px;
+  padding: 8px 10px;
+}
+
+.panel-group{
+  border-radius: 2px;
+  margin: 0 !important;
+}
+
+.panel-add {
+  padding: 5px;
+  text-align: center;
+  height: auto;
+}
+
+.panel-add-text {
+  padding: 5px;
+  text-align: center;
+}
+
+.panel-add>.add-content{
+  display: none;
+}
+.panel-add-text>.add-content{
+  display: block;
+}
+
+.add-content{
+  text-align: center;
+  color: white;
+  padding: 10px;
+}
+.add-content>.title{
+  position: relative;
+  font-size: 16px;
+  top: 0;
+}
+
+.add-content>form{
+  margin: 0;
+  padding: 0;
+}
+
+.add-content>form>label{
+  cursor: pointer;
+  font-weight: 200;
+  margin: 4px;
+  padding: 5px 10px;
+  background-color: rgba(255, 255, 255, 0.33);
+}
+.add-content>form>input[type=radio]:checked + label{
+  background-color: white;
+  font-weight: 400;
+  color: #901155;
+}
+.add-content>form>input[type=radio]{
+  display: none;
+}
+.add-content>form>input[type=button]{
+  margin: 10px 0 5px -4px;
+  padding: 5px 10px;
+  min-width: 125px;
+  border: none;
+  background-color: rgba(255, 255, 255, 0.33);
+}
+.add-content>form>input[type=button]:hover{
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>input[type=button]:active{
+  background-color: rgba(255, 255, 255, 0.66);
+}
+.add-content>form>input[type=button]:focus{
+  outline: none;
+}
+.add-content>form>input[type=text]{
+  border: solid 1px rgba(255, 255, 255, 0.15);
+  margin: 5px 0 5px 0px;
+  padding: 5px 10px;
+  color: white;
+  background-color: rgba(255, 255, 255, 0.33);
+}
+.add-content>form>input[type=text]:focus{
+  outline: none;
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>input[type=text]:active{
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>input[type=text]::-webkit-input-placeholder{
+  color: rgba(255, 255, 255, 0.5);
+}
+.add-content>form>input[type=text]::-moz-placeholder{
+  color: rgba(255, 255, 255, 0.5);
+}
+.add-content>form>input[type=text]:-moz-placeholder{
+  color: rgba(255, 255, 255, 0.5);
+}
+.add-content>form>input[type=text]:-ms-input-placeholder{
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.panel-dir {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.66);
+  font-weight: 300;
+  margin: 2px 5px 5px 5px;
+  width: 80%;
+}
+.panel-dir:hover {
+  color: white;
+  cursor: pointer;
+}
+
+.panel-dir>a{
+  display: inline;
+  color: rgba(255, 255, 255, 0.66) !important;
+}
+.panel-dir>a:hover{
+  color: white !important;
+}
+
+.panel-balance{
+  color: rgba(255, 255, 255, 0.66);
+  position: relative;
+  float: right;
+  padding: 3px 6px;
+}
+.panel-balance:hover{
+  color: white;
+  cursor: pointer;
+}
+
+.panel-item>.panel-destroy{
+  position: relative;
+  float: right;
+  top: -5px;
+  left: 8px;
+  color: rgba(255,255,255,0.33);
+  cursor: pointer;
+  background-color: none;
+  padding: 0px 5px;
+  z-index: 10;
+}
+
+.panel-item>.panel-destroy:hover{
+  color: white;
+}
+
+.panel-item>.panel-lock{
+  position: relative;
+  float: right;
+  top: -8px;
+  left: 10px;
+  color: rgba(255,255,255,0.33);
+  cursor: pointer;
+  background-color: transparent;
+  padding: 3px 5px;
+  z-index: 10;
+}
+
+.panel-item>.panel-lock:hover{
+  color: white;
+}
+
+.panel-item>label{
+  position: relative;
+  display: block;
+  text-align: left;
+  z-index: 0;
+  font-weight: 300;
+  margin-left: 5px;
+  padding: 0;
+}
+
+.panel-group>label{
+  text-align: center;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 20px;
+  margin: 10px 0 5px 0px;
+  display: block;
+  width: 100%;
+}
+
+.panel-group>label>i{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  font-size: 50px;
+}
+
+.panel-group>label:hover{
+  color: white;
+  cursor: pointer;
+}
+
+.panel-add>i {
+  padding: 0px 5px;
+  margin: auto;
+  display: inline-block;
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.66);
+}
+
+.panel-add>i:hover{
+  color: white;
+  cursor: pointer;
+}
+
+.panel-add>i::after{
+  content: "Add";
+  display: inline-block;
+  position: relative;
+  left: 0px;
+  bottom: 2px;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  color: transparent;
+  overflow: hidden;
+  width: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.panel-add>i:hover::after{
+  color: white;
+  left: 5px;
+  width: 30px;
+  margin-left: 2px;
+}
+
+.panel-item>.panel-slider{
+  display: inline-block;
+  width: -o-calc(100% - 55px);
+  width: -webkit-calc(100% - 55px);
+  width: calc(100% - 55px);
+  margin: 0 8px 10px 5px;
+  float: left;
+}
+
+.panel-top>.panel-slider {
+  display:none;
+}
+
+.panel-item>.slider-num{
+  height: 20px;
+  width: 40px;
+  padding: 0 2px;
+  display:inline-block;
+  background-color: transparent;
+  border: none;
+}
+
+.panel-item>.slider-num:focus{
+  background-color: white;
+  color: black;
+}
+
+.panel-top>.slider-num{
+  display:none;
+}
