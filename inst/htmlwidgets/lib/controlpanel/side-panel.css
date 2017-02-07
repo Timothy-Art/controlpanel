@@ -1,0 +1,30 @@
+.side-nav {
+  height: 100%; /* 100% Full-height */
+    width: 400px; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    right: 0;
+    background-color: #290a1b; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s;
+}
+
+.side-nav .closebtn {
+  position: absolute;
+  background-color: #290a1b;
+  padding: 5px 15px;
+  top: 0;
+  left: 0;
+  font-size: 36px;
+}
+
+.side-nav a {
+  text-decoration: none;
+  color: white;
+}
+
+.side-nav>div{
+  margin: 5px;
+}

@@ -1,0 +1,60 @@
+{
+  "ManagerID": 0,
+  "ID": 0,
+  "Name": "Tim Art",
+  "ProfileName": "Profile_1",
+  "DateCreated": "2017-01-06 11:17:00",
+  "Tickers": ["AAPL US"],
+  "Options": [{
+    "Name": "Quality",
+    "Weight": 1,
+    "Factors": [
+      {
+        "Name": "Profitability",
+        "Weight": 0.5,
+        "Factors": [
+          {"Name": "GPOA", "Weight": 0.2},
+          {"Name": "ROA", "Weight": 0.2},
+          {"Name": "CFOA", "Weight": 0.2},
+          {"Name": "GMOR", "Weight": 0.2},
+          {"Name": "Acc", "Weight": 0.2}
+        ]
+      },
+      {
+        "Name": "Safety",
+        "Weight": 0.5,
+        "Factors": [
+          {"Name": "BAB", "Weight": 0.167},
+          {"Name": "IVOL", "Weight": 0.167},
+          {"Name": "LEV", "Weight": 0.167},
+          {"Name": "O", "Weight": 0.167},
+          {"Name": "Z", "Weight": 0.166},
+          {"Name": "EVOL", "Weight": 0.166}
+        ]
+      }]
+    },
+  {
+    "Name": "Valuation",
+    "Weight": 1,
+    "Factors": [
+      {"Name": "Sales", "Weight": 0.25},
+      {"Name": "Book", "Weight": 0.25},
+      {"Name": "CF", "Weight": 0.25},
+      {
+        "Name": "Earnings",
+        "Weight": 0.25,
+        "Factors": [
+          {"Name": "PE", "Weight": 0.5},
+          {"Name": "PET1", "Weight": 0.5}
+        ]
+      }
+    ]
+  },
+  {
+    "Name": "Technical",
+    "Weight": 1,
+    "Factors": [
+      {"Name": "RSI", "Weight": 1}
+    ]
+  }]
+}
