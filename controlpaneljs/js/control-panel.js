@@ -1,6 +1,7 @@
 var groups = {};
 var precision = 1000;
 var ap = new AddPanel();
+var topPanels = 3;
 
 /*--ControlSlider(options, containerId)--------------------
 A class containing the html elements for the add panels
@@ -10,7 +11,7 @@ Properties:
   current...........(Number) current stage in the form
 Functions:
   createRadio(), createText(), createButton(),
-  getNext(), getData()
+  getNext(), getData(), removeSelf()
 ---------------------------------------------------------*/
 function AddPanel() {
   this.stage = [];
@@ -93,6 +94,14 @@ AddPanel.prototype.getNext = function() {
   if(this.current == 0){
     var span = document.createElement('span');
 
+    var cancel = document.createElement('span');
+    cancel.setAttribute("alt", "Cancel");
+    cancel.setAttribute("title", "Cancel");
+    cancel.setAttribute('aria-hidden', "true");
+    cancel.className = 'add-cancel fa fa-times';
+
+    span.appendChild(cancel);
+
     var i = document.createElement('div');
     i.appendChild(document.createTextNode('Add a New Control:'));
     i.className = 'title';
@@ -114,8 +123,16 @@ AddPanel.prototype.getNext = function() {
   } else if(this.current = 1) {
     var span = document.createElement('span')
 
+    var cancel = document.createElement('span');
+    cancel.setAttribute("alt", "Cancel");
+    cancel.setAttribute("title", "Cancel");
+    cancel.setAttribute('aria-hidden', "true");
+    cancel.className = 'add-cancel fa fa-times';
+
+    span.appendChild(cancel);
+
     var i = document.createElement('div');
-    if(this.stage[0].children[2][0].checked){
+    if(this.stage[0].children[3][0].checked){
       i.appendChild(document.createTextNode('Name and Weight:'));
     } else {
       i.appendChild(document.createTextNode('Factor and Weight:'));
@@ -126,7 +143,7 @@ AddPanel.prototype.getNext = function() {
     span.appendChild(document.createElement('hr'));
 
     var form = document.createElement('form');
-    if(this.stage[0].children[2][0].checked){
+    if(this.stage[0].children[3][0].checked){
       form.appendChild(this.createText('f_4', 'Group Name', {width:'135px'}));
     } else {
       form.appendChild(this.createText('f_4', 'Factor', {width:'135px'}));
@@ -158,26 +175,42 @@ AddPanel.prototype.getData = function() {
     throw("FormIncomplete");
   }
 
-  if (this.stage[0].children[2][0].checked){
+  if (this.stage[0].children[3][0].checked){
     slider["Factors"] = {};
   }
 
-  slider["Name"] = this.stage[1].children[2][0].value;
-  slider["Weight"] = Number(this.stage[1].children[2][1].value)/100;
+  slider["Name"] = this.stage[1].children[3][0].value;
+  slider["Weight"] = Number(this.stage[1].children[3][1].value)/100;
   slider["Locked"] = false;
 
   return(slider);
 };
 
 /*--removeSelf()-------------------------------------------
-Removes the add panel from the DOM
+Removes the add panel from the DOM and triggers the reset
+of the parent object
 ---------------------------------------------------------*/
 AddPanel.prototype.removeSelf = function() {
+  //console.log(this.current);
   if (this.current < 0){
     return;
   }
   //console.log('removed');
-  $(this.stage[this.current]).remove();
+  var ele = $($(this.stage[this.current])[0].parentNode);
+  ele.animate(
+    {height: '45px'},
+    {duration: 300,
+    complete: function(){
+      ele.css({'height': 'auto'})
+    }}
+  )
+  //console.log(ele[0].id);
+  $('#'+ele[0].id+'>i').css({'margin-left': 'inherit'}).animate({opacity: 1}, {duration: 300});
+  ele.removeClass('panel-add-text').addClass('panel-add');
+
+  var content = $(this.stage[this.current])
+  content.remove();
+  this.current = -1;
 }
 
 /*--ControlSlider(options, containerId)--------------------
@@ -188,6 +221,7 @@ Parameters:
   options...........(Object) from a configurations json
   containerId.......(String) div id
 Properties:
+  selected..........(Array) list of the panels selected
   panels............(Object) containing the html elements,
                             indexed with the group names
   container.........(String) container id of the control panel
@@ -199,6 +233,7 @@ Functions:
   retrievePanel(name), drawPanel(name), updateOptions(name)
 ---------------------------------------------------------*/
 function ControlPanel(options, containerId) {
+  this.selected = [];
   this.panels = {};
   this.container = containerId;
   this.controls = options.Options;
@@ -268,9 +303,8 @@ ControlPanel.prototype.__genNameChain__ = function(name, __pos__, __panel__, __c
   return(result);
 };
 
-
 /*--setControls(options)-----------------------------------
-Resets the controls object
+Resets the controls object with new options
 Parameters:
   options...........(Object) of options
 ---------------------------------------------------------*/
@@ -347,7 +381,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
 };
 
 /*--findElement(name)--------------------------------------
-Finds and returns a control given a name/id
+Finds and returns a controls object given a name/id
 Parameters:
   name..............(String) id of the element
 Returns:
@@ -396,11 +430,11 @@ ControlPanel.prototype.findElement = function(name) {
 };
 
 /*--findParent(name)----------------------------------------
-Returns parent of a given element name
+Returns parent controls object of a given element name
 Parameters:
   name..............(String) id of the element
 Returns:
-  (Object) Parent panel
+  (Object) Parent control
 ---------------------------------------------------------*/
 ControlPanel.prototype.findParent = function(name) {
   recFind = function(pos, name){
@@ -441,11 +475,11 @@ ControlPanel.prototype.findParent = function(name) {
 };
 
 /*--retrievePanel(name)------------------------------------
-Returns html element of a requested panel
+Returns the panels object of a requested panel
 Parameters:
   name..............(String) id of the panel requested
 Returns:
-  (Object) Panel element
+  (Object) Panels object
 ---------------------------------------------------------*/
 ControlPanel.prototype.retrievePanel = function(name, __pos__) {
   if(this.panels === undefined){
@@ -690,8 +724,9 @@ function ControlSlider(name, group, weight, locked, topLevel){
     div.setAttribute("id", name+"-destroy");
     div.setAttribute("alt", "Remove Factor");
     div.setAttribute("title", "Remove Factor");
-    div.className = 'panel-destroy';
-    div.appendChild(document.createTextNode("\u2716"));
+    div.setAttribute('aria-hidden', "true");
+    div.className = 'panel-destroy fa fa-times';
+    //div.appendChild(document.createTextNode("\u2716"));
   }
 
   slider.appendChild(div);
@@ -701,20 +736,24 @@ function ControlSlider(name, group, weight, locked, topLevel){
     div.setAttribute("id", name+"-lock");
     div.setAttribute("alt", "Lock Factor");
     div.setAttribute("title", "Lock Factor");
+    div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock';
     if(locked){
-      div.className += ' locked'
+      div.className += ' locked fa fa-lock'
+    } else {
+      div.className += ' fa fa-unlock-alt'
     }
-    lock_icon: {
-        i = document.createElement("i");
-        if(locked){
-          i.className = 'fa fa-lock'
-        } else {
-          i.className = "fa fa-unlock-alt";
-        }
-        i.setAttribute('aria-hidden', "true");
-    }
-    div.appendChild(i);
+  }
+
+  slider.appendChild(div);
+
+  inspect_button: {
+    div = document.createElement("div");
+    div.setAttribute("id", name+"-inspect");
+    div.setAttribute("alt", "Inspect Factor");
+    div.setAttribute("title", "Inspect Factor");
+    div.setAttribute('aria-hidden', "true");
+    div.className = 'panel-inspect fa fa-search';
   }
 
   slider.appendChild(div);
@@ -732,6 +771,17 @@ function ControlSlider(name, group, weight, locked, topLevel){
   }
 
   slider.appendChild(div);
+
+  /*power: {
+    div = document.createElement("span");
+    div.setAttribute("id", name+"-power");
+    div.setAttribute("alt", "Turn Off");
+    div.setAttribute("title", "Turn Off");
+    div.setAttribute('aria-hidden', "true");
+    div.className = 'panel-power fa fa-power-off';
+  }
+
+  slider.appendChild(div);*/
 
   slider: {
     div = document.createElement("input");
@@ -753,8 +803,6 @@ function ControlSlider(name, group, weight, locked, topLevel){
     div = document.createElement("input");
     div.setAttribute("id", name+"-slider-num");
     div.setAttribute("type", "text");
-    div.setAttribute("max", "100");
-    div.setAttribute("min", "0");
     div.setAttribute("value", weight*100);
     if (locked){
       div.disabled = true;
@@ -1009,15 +1057,15 @@ $(document).ready(function(){
 
     if (ele.hasClass('locked')){
       ele.removeClass('locked');
-      $('#' + this.id + '>.fa').addClass('fa-unlock-alt');
-      $('#' + this.id + '>.fa').removeClass('fa-lock');
+      $('#' + this.id).addClass('fa-unlock-alt');
+      $('#' + this.id).removeClass('fa-lock');
 
       $('#' + this.id.substr(0, this.id.length-5) + '>input').prop('disabled', false);
       groups[group][this.id.substr(0, this.id.length-5)].lock = false;
     } else {
       ele.addClass('locked');
-      $('#' + this.id + '>.fa').removeClass('fa-unlock-alt');
-      $('#' + this.id + '>.fa').addClass('fa-lock');
+      $('#' + this.id).removeClass('fa-unlock-alt');
+      $('#' + this.id).addClass('fa-lock');
 
       $('#' + this.id.substr(0, this.id.length-5) + '>input').prop('disabled', true);
       groups[group][this.id.substr(0, this.id.length-5)].lock = true;
@@ -1060,6 +1108,7 @@ $(document).ready(function(){
 
         ele.append(form.css({opacity: 0}));
         ele.attr('disabled', false);
+        ele.css({height: 'auto'});
         form.animate({opacity: '1'}, {duration: 200});
       }
     })
@@ -1073,6 +1122,14 @@ $(document).ready(function(){
       $(".add-content>form>input[type=button]").trigger('click');
     }
   })
+
+  /*--add-content>cancel click function--------------------
+  Handles when the user hits cancel on the add form
+  -------------------------------------------------------*/
+  $("body").on("click", ".add-content>.add-cancel", function(e) {
+    console.log('cancel');
+    ap.removeSelf();
+  });
 
   /*--add-content>button click function--------------------
   Handles when the user hits next on the add form
@@ -1105,10 +1162,7 @@ $(document).ready(function(){
             "name, please use a unique name.") + "</span>")
         );
       } else {
-        $('#'+ele[0].id+'>.add-content').remove();
-        $('#'+ele[0].id+'>i').css({'margin-left': 'inherit', 'opacity': 1});
-        ele.removeClass('panel-add-text').addClass('panel-add');
-        ele.css({'height': 'auto'});
+        ap.removeSelf();
         //console.log(newControl.Weight);
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
         addSlider(ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
@@ -1130,11 +1184,12 @@ $(document).ready(function(){
   Swaps the panel forward to what is in a group.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-group>label", function(e){
+    ap.removeSelf();
     var ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-13)
-    console.log(ele);
+    //console.log(ele);
     var cp = $("#"+ele)[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
-    console.log(cp);
+    //console.log(cp);
     cp.drawPanel(e.currentTarget.id.substr(0, e.currentTarget.id.length-13));
   })
 
@@ -1143,6 +1198,7 @@ $(document).ready(function(){
   directory
   -------------------------------------------------------*/
   $("body").on("click", ".panel-dir>a", function(e){
+    ap.removeSelf();
     var ele = $(e.currentTarget)[0].parentNode.parentNode.parentNode.id;
     var cp = $("#"+ele).data('cp');
     cp.drawPanel(e.target.text);
@@ -1173,23 +1229,38 @@ $(document).ready(function(){
   greater than 100.
   -------------------------------------------------------*/
   $("body").on("keydown", ".slider-num", function(e){
-    if(e.keyCode === 13){
-      e.target.blur();
-      $(e.target.id).trigger('change');
-      if(this.value > 100) {
+    if (e.keyCode === 13){
+      if(Number(this.value) > 100) {
         this.value = 100;
       };
+      this.blur();
+    } else if (e.keyCode === 190){
+      if (this.value.indexOf('.') === -1){
+        var cursor = this.selectionStart;
+        this.value = this.value.slice(0, cursor) + '.' + this.value.slice(cursor);
+        this.selectionStart = cursor+1;
+        this.selectionEnd = cursor+1;
+      }
     };
   });
+
+  /*--slider-num onblur function--------------------------
+  triggers a change event when blurred.
+  -------------------------------------------------------*/
+  $("body").on("blur", ".slider-num", function(e){
+    $(this).trigger('change');
+  })
 
   /*--slider-num onchange function-------------------------
   updates the slider element based on the number input and
   re-balances the sliders in the group.
   -------------------------------------------------------*/
   $("body").on("change", ".slider-num", function(e){
+    //console.log(Number(this.value));
     var group = this.parentNode.parentNode.id;
     var slider = $('#' + e.target.id.substr(0, e.target.id.length-4));
     var value = Math.min(100, Number(this.value))*precision;
+
     slider.val(value/precision);
 
     balanceGroups(group, e.target.id.substr(0, e.target.id.length-11), value);
