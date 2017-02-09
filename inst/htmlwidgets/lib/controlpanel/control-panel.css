@@ -175,6 +175,21 @@ h2 {
   color: white;
   padding: 10px;
 }
+
+.add-content>.add-cancel{
+  position: relative;
+  float: right;
+  margin: 0 0 0 -20px;
+  padding: 0px;
+  top: -28px;
+  right: -8px;
+  color: rgba(255,255,255,0.33);
+}
+.add-content>.add-cancel:hover{
+  cursor: pointer;
+  color: white;
+}
+
 .add-content>.title{
   position: relative;
   font-size: 16px;
@@ -281,12 +296,12 @@ h2 {
 .panel-item>.panel-destroy{
   position: relative;
   float: right;
-  top: -5px;
+  top: -8px;
   left: 8px;
   color: rgba(255,255,255,0.33);
   cursor: pointer;
   background-color: none;
-  padding: 0px 5px;
+  padding: 6px 5px;
   z-index: 10;
 }
 
@@ -302,11 +317,27 @@ h2 {
   color: rgba(255,255,255,0.33);
   cursor: pointer;
   background-color: transparent;
-  padding: 3px 5px;
+  padding: 6px 5px;
   z-index: 10;
 }
 
 .panel-item>.panel-lock:hover{
+  color: white;
+}
+
+.panel-item>.panel-inspect{
+  position: relative;
+  float: right;
+  top: -9px;
+  left: 10px;
+  color: rgba(255,255,255,0.33);
+  cursor: pointer;
+  background-color: transparent;
+  padding: 6px 5px;
+  z-index: 10;
+}
+
+.panel-item>.panel-inspect:hover{
   color: white;
 }
 
@@ -374,6 +405,15 @@ h2 {
   left: 5px;
   width: 30px;
   margin-left: 2px;
+}
+
+.panel-item>.panel-power{
+  float: left;
+  padding: 3px 5px;
+}
+
+.panel-top>.panel-power{
+  display: none;
 }
 
 .panel-item>.panel-slider{
