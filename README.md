@@ -1,6 +1,7 @@
 # Control Panel Package for R
+---
 
-Creates a control panel for weighting and organizing financial factors. The current tool allows users to add and remove groups or individual factors and assign weights using either the sliders or numerical inputs. 
+Creates a control panel for weighting and organizing financial factors. The current tool allows users to add and remove groups or individual factors and assign weights using either the sliders or numerical inputs.
 
 ## Usage
 
@@ -14,4 +15,4 @@ To create the control panel, call `controlpanel(opts, factor_list, ...)`
 
 For use with shiny, call the `controlpanelOutput` and `renderControlpanel` functions.
 
-When created in the shiny enivronment, `input$<elementID>_opts` will allow you to access the most recent options list from the control panel. 
+When created in the shiny enivronment, `input$<elementID>_opts` will allow you to access the most recent options list from the control panel.
