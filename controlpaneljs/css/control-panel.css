@@ -147,7 +147,7 @@ h2 {
   padding: 8px 10px;
 }
 
-.panel-group{
+.panel-group {
   border-radius: 2px;
   margin: 0 !important;
 }
@@ -163,20 +163,20 @@ h2 {
   text-align: center;
 }
 
-.panel-add>.add-content{
+.panel-add>.add-content {
   display: none;
 }
-.panel-add-text>.add-content{
+.panel-add-text>.add-content {
   display: block;
 }
 
-.add-content{
+.add-content {
   text-align: center;
   color: white;
   padding: 10px;
 }
 
-.add-content>.add-cancel{
+.add-content>.add-cancel {
   position: relative;
   float: right;
   margin: 0 0 0 -20px;
@@ -185,80 +185,80 @@ h2 {
   right: -8px;
   color: rgba(255,255,255,0.33);
 }
-.add-content>.add-cancel:hover{
+.add-content>.add-cancel:hover {
   cursor: pointer;
   color: white;
 }
 
-.add-content>.title{
+.add-content>.title {
   position: relative;
   font-size: 16px;
   top: 0;
 }
 
-.add-content>form{
+.add-content>form {
   margin: 0;
   padding: 0;
 }
 
-.add-content>form>label{
+.add-content>form>label {
   cursor: pointer;
   font-weight: 200;
   margin: 4px;
   padding: 5px 10px;
   background-color: rgba(255, 255, 255, 0.33);
 }
-.add-content>form>input[type=radio]:checked + label{
+.add-content>form>input[type=radio]:checked + label {
   background-color: white;
   font-weight: 400;
   color: #901155;
 }
-.add-content>form>input[type=radio]{
+.add-content>form>input[type=radio] {
   display: none;
 }
-.add-content>form>input[type=button]{
+.add-content>form>input[type=button] {
   margin: 10px 0 5px -4px;
   padding: 5px 10px;
   min-width: 125px;
   border: none;
   background-color: rgba(255, 255, 255, 0.33);
 }
-.add-content>form>input[type=button]:hover{
+.add-content>form>input[type=button]:hover {
   background-color: white;
   color: #901155;
 }
-.add-content>form>input[type=button]:active{
+.add-content>form>input[type=button]:active {
   background-color: rgba(255, 255, 255, 0.66);
 }
-.add-content>form>input[type=button]:focus{
+.add-content>form>input[type=button]:focus {
   outline: none;
 }
-.add-content>form>input[type=text]{
+.add-content>form>input[type=text] {
   border: solid 1px rgba(255, 255, 255, 0.15);
   margin: 5px 0 5px 0px;
   padding: 5px 10px;
   color: white;
   background-color: rgba(255, 255, 255, 0.33);
 }
-.add-content>form>input[type=text]:focus{
+.add-content>form>input[type=text]:focus {
   outline: none;
   background-color: white;
   color: #901155;
 }
-.add-content>form>input[type=text]:active{
+.add-content>form>input[type=text]:active {
   background-color: white;
   color: #901155;
 }
-.add-content>form>input[type=text]::-webkit-input-placeholder{
+.add-content>form>input[type=text]::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.add-content>form>input[type=text]::-moz-placeholder{
+.add-content>form>input[type=text]::-moz-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.add-content>form>input[type=text]:-moz-placeholder{
+.add-content>form>input[type=text]:-moz-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.add-content>form>input[type=text]:-ms-input-placeholder{
+.add-content>form>input[type=text]:-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
 
@@ -274,26 +274,26 @@ h2 {
   cursor: pointer;
 }
 
-.panel-dir>a{
+.panel-dir>a {
   display: inline;
   color: rgba(255, 255, 255, 0.66) !important;
 }
-.panel-dir>a:hover{
+.panel-dir>a:hover {
   color: white !important;
 }
 
-.panel-balance{
+.panel-balance {
   color: rgba(255, 255, 255, 0.66);
   position: relative;
   float: right;
   padding: 3px 6px;
 }
-.panel-balance:hover{
+.panel-balance:hover {
   color: white;
   cursor: pointer;
 }
 
-.panel-item>.panel-destroy{
+.panel-item>.panel-destroy {
   position: relative;
   float: right;
   top: -8px;
@@ -305,11 +305,11 @@ h2 {
   z-index: 10;
 }
 
-.panel-item>.panel-destroy:hover{
+.panel-item>.panel-destroy:hover {
   color: white;
 }
 
-.panel-item>.panel-lock{
+.panel-item>.panel-lock {
   position: relative;
   float: right;
   top: -8px;
@@ -321,11 +321,11 @@ h2 {
   z-index: 10;
 }
 
-.panel-item>.panel-lock:hover{
+.panel-item>.panel-lock:hover {
   color: white;
 }
 
-.panel-item>.panel-inspect{
+.panel-item>.panel-inspect {
   position: relative;
   float: right;
   top: -9px;
@@ -337,11 +337,11 @@ h2 {
   z-index: 10;
 }
 
-.panel-item>.panel-inspect:hover{
+.panel-item>.panel-inspect:hover {
   color: white;
 }
 
-.panel-item>label{
+.panel-item>label {
   position: relative;
   display: block;
   text-align: left;
@@ -349,25 +349,31 @@ h2 {
   font-weight: 300;
   margin-left: 5px;
   padding: 0;
+  overflow: hidden;
 }
 
-.panel-group>label{
+.panel-group>label {
   text-align: center;
   color: rgba(255, 255, 255, 0.66);
   font-size: 20px;
   margin: 10px 0 5px 0px;
   display: block;
   width: 100%;
+  overflow: hidden;
 }
 
-.panel-group>label>i{
+.scroll-label>span {
+  position: relative;
+}
+
+.panel-group>label>i {
   display: inline-block;
   position: relative;
   width: 100%;
   font-size: 50px;
 }
 
-.panel-group>label:hover{
+.panel-group>label:hover {
   color: white;
   cursor: pointer;
 }
@@ -380,12 +386,12 @@ h2 {
   color: rgba(255, 255, 255, 0.66);
 }
 
-.panel-add>i:hover{
+.panel-add>i:hover {
   color: white;
   cursor: pointer;
 }
 
-.panel-add>i::after{
+.panel-add>i::after {
   content: "Add";
   display: inline-block;
   position: relative;
@@ -400,23 +406,23 @@ h2 {
   transition: all 0.2s ease-in-out;
 }
 
-.panel-add>i:hover::after{
+.panel-add>i:hover::after {
   color: white;
   left: 5px;
   width: 30px;
   margin-left: 2px;
 }
 
-.panel-item>.panel-power{
+.panel-item>.panel-power {
   float: left;
   padding: 3px 5px;
 }
 
-.panel-top>.panel-power{
+.panel-top>.panel-power {
   display: none;
 }
 
-.panel-item>.panel-slider{
+.panel-item>.panel-slider {
   display: inline-block;
   width: -o-calc(100% - 55px);
   width: -webkit-calc(100% - 55px);
@@ -429,7 +435,7 @@ h2 {
   display:none;
 }
 
-.panel-item>.slider-num{
+.panel-item>.slider-num {
   height: 20px;
   width: 40px;
   padding: 0 2px;
@@ -438,11 +444,11 @@ h2 {
   border: none;
 }
 
-.panel-item>.slider-num:focus{
+.panel-item>.slider-num:focus {
   background-color: white;
   color: black;
 }
 
-.panel-top>.slider-num{
+.panel-top>.slider-num {
   display:none;
 }

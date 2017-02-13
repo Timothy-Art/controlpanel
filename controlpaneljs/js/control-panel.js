@@ -760,14 +760,21 @@ function ControlSlider(name, group, weight, locked, topLevel){
 
   label: {
     div = document.createElement("label");
+    div.className = 'scroll-label';
     div.setAttribute("id", name+"-slider-label");
+    div.setAttribute("alt", name);
+    div.setAttribute("title", name);
     if (group){
       icon = document.createElement("i");
       icon.className = 'fa fa-plus-circle';
       icon.setAttribute('aria-hidden', 'true');
       div.appendChild(icon);
     }
-    div.appendChild(document.createTextNode(name));
+    var text = document.createElement("span");
+    text.appendChild(
+      document.createTextNode(name)
+    );
+    div.appendChild(text);
   }
 
   slider.appendChild(div);
@@ -1191,6 +1198,32 @@ $(document).ready(function(){
     cp = $("#"+cp).data('cp');
     //console.log(cp);
     cp.drawPanel(e.currentTarget.id.substr(0, e.currentTarget.id.length-13));
+  })
+
+  $("body").on("mouseenter", ".scroll-label",
+  function(e){
+    var label = $(this);
+    var text = $(this.lastChild);
+    var diff = text.width() - label.width();
+
+    var animateLabel = function() {
+      text.animate({
+        left: "-="+String(diff)
+      }, {
+        duration: (text.width()-label.width())*40,
+        easing: 'linear'
+      })
+    }
+
+    //console.log(diff)
+    if (diff > 0){
+        animateLabel()
+    }
+
+  }).on("mouseleave", ".scroll-label",
+  function(e){
+    //console.log('stop');
+    $(this.lastChild).stop().css({"left": 0});
   })
 
   /*--panel-dir onclick function---------------------------
