@@ -1193,11 +1193,13 @@ $(document).ready(function(){
   $("body").on("click", ".panel-group>label", function(e){
     ap.removeSelf();
     var ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-13)
+
+    $($('#'+ele+'>.scroll-label')[0].lastChild).stop().css({"left": 0});
     //console.log(ele);
     var cp = $("#"+ele)[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
     //console.log(cp);
-    cp.drawPanel(e.currentTarget.id.substr(0, e.currentTarget.id.length-13));
+    cp.drawPanel(ele);
   })
 
   $("body").on("mouseenter", ".scroll-label",
@@ -1210,7 +1212,7 @@ $(document).ready(function(){
       text.animate({
         left: "-="+String(diff)
       }, {
-        duration: (text.width()-label.width())*40,
+        duration: (text.width()-label.width())*25,
         easing: 'linear'
       })
     }
