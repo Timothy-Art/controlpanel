@@ -1036,6 +1036,10 @@ $(document).ready(function(){
   $("body").on("click", ".panel-balance", function(e){
     //console.log('balanced', this.id.substr(0, this.id.length-8));
     resetGroups(this.id.substr(0, this.id.length-8));
+
+    var cp = this.parentNode.parentNode.id;
+    cp = $("#"+cp).data('cp');
+    cp.updateOptions();
   });
 
   /*--panel-destroy onclick function--------------------------
