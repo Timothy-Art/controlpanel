@@ -352,6 +352,17 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
       balance.appendChild(icon);
       __pos__['html'].appendChild(balance);
 
+      var reset = document.createElement('span');
+      reset.setAttribute('alt', 'Reset Factors');
+      reset.setAttribute('title', 'Reset Factors');
+      reset.setAttribute('id', __name__[0]+'-reset')
+      reset.className = 'panel-balance';
+      var icon = document.createElement('i');
+      icon.className = 'fa fa-refresh';
+      icon.setAttribute('aria-hidden', 'true');
+      reset.appendChild(icon);
+      __pos__['html'].appendChild(reset);
+
       var add = document.createElement('div');
       add.className = 'panel-item panel-add';
       add.setAttribute('id', __name__[0]+'-add');
@@ -943,7 +954,7 @@ function addSlider(group, name, isGroup, weight, locked, topLevel){
   }
   groups[group][name] = {value: weight*100*precision, lock: locked};
   var panel = document.getElementById(group)
-  panel.insertBefore(ControlSlider(name, isGroup, weight, locked, topLevel), panel.childNodes[3]);
+  panel.insertBefore(ControlSlider(name, isGroup, weight, locked, topLevel), panel.childNodes[4]);
   balanceGroups(group, name, weight*100*precision);
 
   //console.log(groups);
@@ -963,17 +974,34 @@ function removeSlider(group, name){
     throw ("InvalidSlider");
   };
 
+  // Check if the slider is locked before removing
   if(!groups[group][name].lock){
+    // Set the value of the slider to 0 first
     balanceGroups(group, name, 0);
-    if(groups[group][name].value != 0){
+
+    // Checking if the slider is not 0 (because of locked sliders)
+    if (groups[group][name].value != 0){
+      console.log('removed slider cannot be made 0')
       key = Object.keys(groups[group])
+      locked = []
+
+      // Unlocking all sliders
       for (i in key){
-        groups[group][key[i]].lock = false;
+        // Checking if slider is locked. Unlocking and push to array if true.
+        if (groups[group][key[i]].lock){
+          console.log('unlocking', key[i]);
+          locked.push(key[i]);
+          groups[group][key[i]].lock = false;
+        }
       };
+      // Rebalancing
       balanceGroups(group, name, 0);
-      for (i in key){
-        if (key[i] != name){
-          groups[group][key[i]].lock = true;
+
+      // Re-locking sliders
+      for (i in locked){
+        if (locked[i] != name){
+          groups[group][locked[i]].lock = true;
+          console.log('locking', locked[i]);
         };
       };
     };

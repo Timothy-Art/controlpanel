@@ -113,7 +113,6 @@ h2 {
 .panel-item>.panel-slider:disabled::-ms-fill-lower {
   background: #0b768e;
 }
-
 .panel-item>.panel-slider::-ms-fill-upper {
   height: 100%;
   background: #901155;
