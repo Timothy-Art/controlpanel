@@ -355,7 +355,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
       var reset = document.createElement('span');
       reset.setAttribute('alt', 'Reset Factors');
       reset.setAttribute('title', 'Reset Factors');
-      reset.setAttribute('id', __name__[0]+'-reset')
+      reset.setAttribute('id', 'slider-reset');
       reset.className = 'panel-balance';
       var icon = document.createElement('i');
       icon.className = 'fa fa-refresh';
@@ -1063,6 +1063,15 @@ $(document).ready(function(){
     };
   };*/
   //console.log(groups);
+
+  /*--panel-reset onclick function-----------------------
+  Re-balances all unlocked sliders
+  -------------------------------------------------------*/
+  $("body").on("click", "#slider-reset", function(e){
+    //console.log('balanced', this.id.substr(0, this.id.length-8));
+    resetGroups();
+  });
+
 
   /*--panel-balance onclick function-----------------------
   Re-balances all unlocked sliders
