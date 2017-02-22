@@ -19,7 +19,7 @@ function AddPanel() {
 }
 
 /*--createRadio()------------------------------------------
-Internal function to create a radio button
+Internal function to create a radio button.
 Parameters:
   id................(String) id of radio
   group.............(String) name of radio group it belongs to
@@ -48,7 +48,7 @@ AddPanel.prototype.createRadio = function(id, group, value, checked){
 };
 
 /*--createRadio()------------------------------------------
-Internal function to create a text input
+Internal function to create a text input.
 Parameters:
   id................(String) id of text input
   value.............(String) placeholder text for input
@@ -67,7 +67,7 @@ AddPanel.prototype.createText = function(id, value, css){
 };
 
 /*--createRadio()------------------------------------------
-Internal function to create a next button
+Internal function to create a next button.
 Parameters:
   id................(String) id of button
   value.............(String) value (text) of button
@@ -188,7 +188,7 @@ AddPanel.prototype.getData = function() {
 
 /*--removeSelf()-------------------------------------------
 Removes the add panel from the DOM and triggers the reset
-of the parent object
+of the parent object.
 ---------------------------------------------------------*/
 AddPanel.prototype.removeSelf = function() {
   //console.log(this.current);
@@ -229,8 +229,10 @@ Properties:
   misc..............(Object) extra options
   current...........(String) name of the currently displayed group
 Functions:
-  buildPanels(), findElement(name), findParent(name),
-  retrievePanel(name), drawPanel(name), updateOptions(name)
+  setControls(options), buildPanels(), findElement(name),
+  findParent(name), retrievePanel(name), drawPanel(name),
+  erasePanel(), clearPanels(), addGroup(name, parent),
+  updateOptions(name), getOptions()
 ---------------------------------------------------------*/
 function ControlPanel(options, containerId) {
   this.selected = [];
@@ -239,6 +241,8 @@ function ControlPanel(options, containerId) {
   this.controls = options.Options;
   this.misc = [options.DateCreated, options.ManagerID, options.ID, options.Name, options.Tickers, options.ProfileName];
   this.current = '';
+
+  $("#"+this.container).data({cp: this});
 };
 
 /*--__genName__(names)--------------------------------------
@@ -264,7 +268,7 @@ ControlPanel.prototype.__genName__ = function(names) {
 };
 
 /*--__genNameChain__(name)--------------------------------------
-Builds a sequence of names for the path of a given name/id
+Builds a sequence of names for the path of a given name/id.
 Parameters:
   name..............(String) name to create chain for
 Returns:
@@ -304,7 +308,7 @@ ControlPanel.prototype.__genNameChain__ = function(name, __pos__, __panel__, __c
 };
 
 /*--setControls(options)-----------------------------------
-Resets the controls object with new options
+Resets the controls object with new options.
 Parameters:
   options...........(Object) of options
 ---------------------------------------------------------*/
@@ -316,7 +320,7 @@ ControlPanel.prototype.setControls = function(options) {
 
 /*--buildPanels()------------------------------------------
 Builds and stores the html elements for all panels/subpanels
-based on the options passed in the constructor
+based on the options passed in the constructor.
 ---------------------------------------------------------*/
 ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
   //console.log("Iteration:", __name__, "\nState:", this.panels);
@@ -345,7 +349,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
       balance.setAttribute('alt', 'Balance Factors');
       balance.setAttribute('title', 'Balance Factors');
       balance.setAttribute('id', __name__[0]+'-balance')
-      balance.className = 'panel-balance';
+      balance.className = 'panel-balance balance-btn';
       var icon = document.createElement('i');
       icon.className = 'fa fa-sliders';
       icon.setAttribute('aria-hidden', 'true');
@@ -353,8 +357,8 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
       __pos__['html'].appendChild(balance);
 
       var reset = document.createElement('span');
-      reset.setAttribute('alt', 'Reset Factors');
-      reset.setAttribute('title', 'Reset Factors');
+      reset.setAttribute('alt', 'Balance All');
+      reset.setAttribute('title', 'Balance All');
       reset.setAttribute('id', 'slider-reset');
       reset.className = 'panel-balance';
       var icon = document.createElement('i');
@@ -392,7 +396,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__) {
 };
 
 /*--findElement(name)--------------------------------------
-Finds and returns a controls object given a name/id
+Finds and returns a controls object given a name/id.
 Parameters:
   name..............(String) id of the element
 Returns:
@@ -441,7 +445,7 @@ ControlPanel.prototype.findElement = function(name) {
 };
 
 /*--findParent(name)----------------------------------------
-Returns parent controls object of a given element name
+Returns parent controls object of a given element name.
 Parameters:
   name..............(String) id of the element
 Returns:
@@ -486,7 +490,7 @@ ControlPanel.prototype.findParent = function(name) {
 };
 
 /*--retrievePanel(name)------------------------------------
-Returns the panels object of a requested panel
+Returns the panels object of a requested panel.
 Parameters:
   name..............(String) id of the panel requested
 Returns:
@@ -521,11 +525,20 @@ ControlPanel.prototype.retrievePanel = function(name, __pos__) {
 };
 
 /*--drawPanel(name)----------------------------------------
-Draws the requested panel to the ControlPanel container
+Draws the requested panel to the ControlPanel container.
 Parameters:
   name..............(String) id of the panel to show
+  anim..............(Boolean) whether to play a transition,
+                              defaults to true
 ---------------------------------------------------------*/
-ControlPanel.prototype.drawPanel = function (name) {
+ControlPanel.prototype.drawPanel = function(name, anim) {
+  if (anim === undefined){
+    anim = true;
+  }
+  if (name === undefined){
+    throw('No panel name given');
+  }
+
   if (name === this.current){
     return;
   } else if (this.current === ''){
@@ -546,6 +559,11 @@ ControlPanel.prototype.drawPanel = function (name) {
   }
   //console.log('current: '+this.current);
 
+  if (!anim){
+    c.html(new_ele);
+    return;
+  }
+
   ele.animate({'opacity': 0}, 1000, animDone());
 
   function animDone(){
@@ -556,6 +574,23 @@ ControlPanel.prototype.drawPanel = function (name) {
     ele.css({opacity: 0})
     ele.animate({opacity: 1}, 300);
   };
+};
+
+/*--erasePanel(name)---------------------------------------
+Erases the current panel from the ControlPanel container.
+---------------------------------------------------------*/
+ControlPanel.prototype.erasePanel = function () {
+  $("#"+this.container).empty();
+  $("#"+this.container).data({cp: this});
+  this.current = '';
+};
+
+/*--clearPanels(name)--------------------------------------
+Clears the panel object so that it can be rebuilt.
+---------------------------------------------------------*/
+ControlPanel.prototype.clearPanels = function () {
+  this.panels = {};
+  this.current = '';
 };
 
 /*--addGroup(name, parent)---------------------------------
@@ -655,7 +690,9 @@ ControlPanel.prototype.updateOptions = function (name) {
         if (poi >= 0){
           opts[poi].Weight = Number($('#'+p+'-slider-num').val())/100;
         } else {
-          opts.unshift({Name: p, Weight: Number($('#'+p+'-slider-num').val())/100})
+          opts.unshift({Name: p, Weight: Number($('#'+p+'-slider-num').val())/100});
+          //console.log(opts);
+          poi = '0';
         };
         marked.push(poi);
       };
@@ -699,7 +736,7 @@ ControlPanel.prototype.getOptions = function() {
 };
 
 /*--ControlSlider(name)------------------------------------
-A function to build and return a control slider html element
+A function to build and return a control slider html element.
 Parameters:
   name..............(String) id for the slider
   group.............(Boolean) true if it's a group
@@ -1065,18 +1102,50 @@ $(document).ready(function(){
   //console.log(groups);
 
   /*--panel-reset onclick function-----------------------
-  Re-balances all unlocked sliders
+  Re-balances all unlocked sliders.
   -------------------------------------------------------*/
   $("body").on("click", "#slider-reset", function(e){
-    //console.log('balanced', this.id.substr(0, this.id.length-8));
-    resetGroups();
+    var cp = this.parentNode.parentNode.id;
+    cp = $("#"+cp).data('cp');
+
+    var controls = cp.controls;
+    var current = cp.current;
+    var keys = Object.keys(groups)
+    var poi;
+
+    console.log(keys);
+
+    for (i in keys){
+      var temp = keys[i];
+      //console.log(temp);
+      poi = cp.findElement(temp);
+
+      if (temp != "Main"){
+        //console.log('Not Main');
+        poi = poi.Factors;
+      }
+      //console.log('poi', poi);
+      resetGroups(temp);
+      newVal = 1 / poi.length;
+
+      for (j in poi){
+        //console.log(j);
+        poi[j].Weight = newVal;
+      };
+    };
+
+    cp.erasePanel();
+    cp.clearPanels();
+    cp.buildPanels();
+
+    cp.drawPanel(current, anim=false);
   });
 
 
   /*--panel-balance onclick function-----------------------
-  Re-balances all unlocked sliders
+  Re-balances all unlocked sliders.
   -------------------------------------------------------*/
-  $("body").on("click", ".panel-balance", function(e){
+  $("body").on("click", ".balance-btn", function(e){
     //console.log('balanced', this.id.substr(0, this.id.length-8));
     resetGroups(this.id.substr(0, this.id.length-8));
 
@@ -1129,7 +1198,7 @@ $(document).ready(function(){
   });
 
   /*--panel-add onclick function---------------------------
-  Opens up a dialogue to add a new item to a panel
+  Opens up a dialogue to add a new item to a panel.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-add", function(e){
     //console.log(this.id);
@@ -1169,7 +1238,7 @@ $(document).ready(function(){
   });
 
   /*--add-content keydown function-------------------------
-  Allows users to hit enter on text fields to submit form
+  Allows users to hit enter on text fields to submit form.
   -------------------------------------------------------*/
   $("body").on("keydown", ".add-content>form>input", function(e) {
     if (e.keyCode == 13){
@@ -1178,7 +1247,7 @@ $(document).ready(function(){
   })
 
   /*--add-content>cancel click function--------------------
-  Handles when the user hits cancel on the add form
+  Handles when the user hits cancel on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>.add-cancel", function(e) {
     console.log('cancel');
@@ -1186,7 +1255,7 @@ $(document).ready(function(){
   });
 
   /*--add-content>button click function--------------------
-  Handles when the user hits next on the add form
+  Handles when the user hits next on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>form>input[type=button]", function(e) {
     var ele = $("#"+this.parentNode.parentNode.parentNode.id);
@@ -1277,7 +1346,7 @@ $(document).ready(function(){
 
   /*--panel-dir onclick function---------------------------
   Swaps the panel back to whatever was selected in the top
-  directory
+  directory.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-dir>a", function(e){
     ap.removeSelf();
