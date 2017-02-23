@@ -941,7 +941,7 @@ function balanceGroups(groupName, sliderName, update){
     }
     index = (keys.length + index + 1) % keys.length;
   }
-  //console.log(diff_total);
+  //console.log('diff_total', diff_total);
   if (diff_total != 0){
     $("#"+sliderName+"-slider").val((update + diff_total)/precision);
     $("#"+sliderName+"-slider-num").val((update + diff_total)/precision);
@@ -1124,12 +1124,13 @@ $(document).ready(function(){
         //console.log('Not Main');
         poi = poi.Factors;
       }
-      //console.log('poi', poi);
+      console.log('poi', poi);
       resetGroups(temp);
       newVal = 1 / poi.length;
 
       for (j in poi){
         //console.log(j);
+        poi[j].Locked = false;
         poi[j].Weight = newVal;
       };
     };
