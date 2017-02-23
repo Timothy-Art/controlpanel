@@ -1140,6 +1140,7 @@ $(document).ready(function(){
     cp.buildPanels();
 
     cp.drawPanel(current, anim=false);
+    cp.updateOptions();
   });
 
 
