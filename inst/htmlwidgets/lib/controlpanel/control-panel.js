@@ -258,9 +258,9 @@ ControlPanel.prototype.__genName__ = function(names) {
   span.className = 'panel-dir';
   for (var i = names.length-1; i >= 0; i--){
     span.appendChild(document.createTextNode(prefix));
-    chain = document.createElement('a');
+    chain = document.createElement('span');
     chain.appendChild(document.createTextNode(names[i]));
-    chain.setAttribute('href', '#');
+    //chain.setAttribute('href', '#');
     span.appendChild(chain);
     prefix = ' > ';
   };
@@ -1350,11 +1350,12 @@ $(document).ready(function(){
   Swaps the panel back to whatever was selected in the top
   directory.
   -------------------------------------------------------*/
-  $("body").on("click", ".panel-dir>a", function(e){
+  $("body").on("click", ".panel-dir>span", function(e){
     ap.removeSelf();
     var ele = $(e.currentTarget)[0].parentNode.parentNode.parentNode.id;
     var cp = $("#"+ele).data('cp');
-    cp.drawPanel(e.target.text);
+    //console.log(e.currentTarget.innerHTML);
+    cp.drawPanel(e.currentTarget.innerHTML);
   })
 
   /*--panel-slider oninput function------------------------
