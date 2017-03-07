@@ -182,7 +182,7 @@ h2 {
   float: right;
   margin: 0 0 0 -20px;
   padding: 0px;
-  top: -28px;
+  top: -26px;
   right: -8px;
   color: rgba(255,255,255,0.33);
 }
@@ -340,6 +340,9 @@ h2 {
 }
 
 .panel-item>.panel-select.fa-circle{
+  color: white;
+}
+.panel-item>.panel-flip.fa-minus{
   color: white;
 }
 
