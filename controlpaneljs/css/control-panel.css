@@ -297,51 +297,49 @@ h2 {
   cursor: pointer;
 }
 
-.panel-item>.panel-destroy {
-  position: relative;
-  float: right;
-  top: -8px;
-  left: 8px;
-  color: rgba(255,255,255,0.33);
-  cursor: pointer;
-  background-color: none;
-  padding: 6px 5px;
-  z-index: 10;
-}
-
-.panel-item>.panel-destroy:hover {
-  color: white;
-}
-
-.panel-item>.panel-lock {
-  position: relative;
-  float: right;
-  top: -8px;
-  left: 10px;
-  color: rgba(255,255,255,0.33);
-  cursor: pointer;
-  background-color: transparent;
-  padding: 6px 5px;
-  z-index: 10;
-}
-
-.panel-item>.panel-lock:hover {
-  color: white;
-}
-
-.panel-item>.panel-inspect {
+.panel-item>.panel-button-x {
   position: relative;
   float: right;
   top: -9px;
+  left: 8px;
+  color: rgba(255,255,255,0.33);
+  cursor: pointer;
+  background-color: transparent;
+  padding-top: 5px;
+  text-align: center;
+  width: 20px;
+  z-index: 10;
+}
+
+.panel-item>.panel-button-x:hover {
+  color: white;
+}
+.panel-item>.panel-button-x:hover.disabled:hover{
+  color: rgba(255,255,255,0.33);
+}
+
+.panel-item>.panel-button {
+  position: relative;
+  float: right;
+  top: -8px;
   left: 10px;
   color: rgba(255,255,255,0.33);
   cursor: pointer;
   background-color: transparent;
-  padding: 6px 5px;
+  padding-top: 5px;
+  text-align: center;
+  width: 20px;
   z-index: 10;
 }
 
-.panel-item>.panel-inspect:hover {
+.panel-item>.panel-button:hover {
+  color: white;
+}
+.panel-item>.panel-button:hover.disabled:hover{
+  color: rgba(255,255,255,0.33);
+}
+
+.panel-item>.panel-select.fa-circle{
   color: white;
 }
 
