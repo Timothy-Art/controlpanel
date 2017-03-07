@@ -598,33 +598,38 @@ Adds a panel to the selected array if it does not already
 exist.
 Parameters:
   name...............(String) id of panel to select
+  silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
-ControlPanel.prototype.selectPanel = function(name){
+ControlPanel.prototype.selectPanel = function(name, silent){
   if (this.selected.indexOf(name) >= 0){
     return;
   } else {
     this.selected.push(name);
   }
 
-
-  $('#'+this.container).trigger('controlselection');
-  $('#'+this.container).trigger('controlselect');
+  if (!silent){
+    $('#'+this.container).trigger('controlselection');
+    $('#'+this.container).trigger('controlselect');
+  }
 };
 
 /*--deselectPanel(name)------------------------------------
 Removes a panel from the selected array if it exists.
 Parameters:
   name...............(String) id of panel to deselect
+  silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
-ControlPanel.prototype.deselectPanel = function(name){
+ControlPanel.prototype.deselectPanel = function(name, silent){
   if (this.selected.indexOf(name) < 0){
     return;
   } else {
     this.selected.splice(this.selected.indexOf(name), 1);
   }
 
-  $('#'+this.container).trigger('controlselection');
-  $('#'+this.container).trigger('controldeselect');
+  if (!silent){
+    $('#'+this.container).trigger('controlselection');
+    $('#'+this.container).trigger('controldeselect');
+  };
 };
 
 /*--addGroup(name, parent)---------------------------------
@@ -685,8 +690,9 @@ sliders. If no name is given, the function defaults to the
 current panel attribute.
 Parameters:
   name..............(String) id of the panel to update
+  silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
-ControlPanel.prototype.updateOptions = function(name){
+ControlPanel.prototype.updateOptions = function(name, silent){
   if (name === undefined){
     name = this.current
     //console.log(name, this.current)
@@ -752,7 +758,10 @@ ControlPanel.prototype.updateOptions = function(name){
 
   //console.log(opts);
   //console.log(this.controls);
-  $('#'+this.container).trigger('controlchanged');
+  if (!silent){
+    //console.log('not silent');
+    $('#'+this.container).trigger('controlchanged');
+  };
 };
 
 /*--getOptions()-------------------------------------------
@@ -968,11 +977,16 @@ function resetGroups(group){
 /*--balanceGroups(change)----------------------------------
 Balances the unlocked sliders.
 Parameters:
-  change............(Object) containing the [0] group name,
-                            [1] slider name, [2] new value
+  groupName..........(String) name of group to balance
+  sliderName.........(String) name of slider being changed
+  update.............(Number) new value of changed slider
+Returns:
+  (Boolean) if change was made to slider
 ---------------------------------------------------------*/
 function balanceGroups(groupName, sliderName, update){
   //console.log(groupName, sliderName, update);
+  var old = groups[groupName][sliderName].value;
+
   update = Number(update);
   groups[groupName][sliderName].value = update;
   var min = 0,
@@ -1011,6 +1025,8 @@ function balanceGroups(groupName, sliderName, update){
     $("#"+sliderName+"-slider-num").val((update + diff_total)/precision);
     groups[groupName][sliderName].value = update + diff_total;
   }
+
+  return(groups[groupName][sliderName].value != old);
 }
 
 /*--addSlider(group, name)---------------------------------
@@ -1272,7 +1288,7 @@ $(document).ready(function(){
       groups[group][this.id.substr(0, this.id.length-5)].lock = true;
     };
 
-    cp.updateOptions();
+    cp.updateOptions(name=group,silent=true);
     //console.log(groups);
   });
 
@@ -1513,8 +1529,9 @@ $(document).ready(function(){
     var label = $('#' + e.target.id + '-num');
     label.val(this.value);
 
-    balanceGroups(group, e.target.id.substr(0, e.target.id.length-7), Number(this.value)*precision);
-    cp.updateOptions();
+    silent = balanceGroups(group, e.target.id.substr(0, e.target.id.length-7), Number(this.value)*precision);
+    //console.log(silent);
+    cp.updateOptions(group, !silent);
   });
 
   /*--slider-num onkeydown function------------------------
@@ -1529,6 +1546,7 @@ $(document).ready(function(){
         this.value = 100;
       };
       this.blur();
+      $(this).trigger('change');
     } else if (e.keyCode === 190){
       if (this.value.indexOf('.') === -1){
         var cursor = this.selectionStart;
@@ -1542,9 +1560,9 @@ $(document).ready(function(){
   /*--slider-num onblur function--------------------------
   triggers a change event when blurred.
   -------------------------------------------------------*/
-  $("body").on("blur", ".slider-num", function(e){
+  /*$("body").on("blur", ".slider-num", function(e){
     $(this).trigger('change');
-  })
+  })*/
 
   /*--slider-num onchange function-------------------------
   updates the slider element based on the number input and
@@ -1556,8 +1574,13 @@ $(document).ready(function(){
     var slider = $('#' + e.target.id.substr(0, e.target.id.length-4));
     var value = Math.min(100, Number(this.value))*precision;
 
+    var cp = $("#"+group)[0].parentNode.id;
+    cp = $("#"+cp).data('cp');
+
     slider.val(value/precision);
 
-    balanceGroups(group, e.target.id.substr(0, e.target.id.length-11), value);
+    silent = balanceGroups(group, e.target.id.substr(0, e.target.id.length-11), value);
+    //console.log('slider-num', silent);
+    cp.updateOptions(group, !silent);
   });
 })
