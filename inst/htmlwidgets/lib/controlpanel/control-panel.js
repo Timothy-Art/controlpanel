@@ -855,14 +855,16 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
   lock_button: {
     div = document.createElement("div");
     div.setAttribute("id", name+"-lock");
-    div.setAttribute("alt", "Lock");
-    div.setAttribute("title", "Lock");
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock panel-button';
     if(locked){
       div.className += ' locked fa fa-lock'
+      div.setAttribute("alt", "Unlock");
+      div.setAttribute("title", "Unlock");
     } else {
       div.className += ' fa fa-unlock-alt'
+      div.setAttribute("alt", "Lock");
+      div.setAttribute("title", "Lock");
     }
   }
 
@@ -1270,6 +1272,8 @@ $(document).ready(function(){
       ele.removeClass('locked');
       ele.addClass('fa-unlock-alt');
       ele.removeClass('fa-lock');
+      ele.attr("alt", "Lock");
+      ele.attr("title", "Lock");
 
       $('#' + this.id.substr(0, this.id.length-5) + '>input').prop('disabled', false);
 
@@ -1280,6 +1284,8 @@ $(document).ready(function(){
       ele.addClass('locked');
       ele.removeClass('fa-unlock-alt');
       ele.addClass('fa-lock');
+      ele.attr("alt", "Unlock");
+      ele.attr("title", "Unlock");
 
       $('#' + this.id.substr(0, this.id.length-5) + '>input').prop('disabled', true);
 
