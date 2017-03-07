@@ -605,6 +605,10 @@ ControlPanel.prototype.selectPanel = function(name){
   } else {
     this.selected.push(name);
   }
+
+
+  $('#'+this.container).trigger('controlselection');
+  $('#'+this.container).trigger('controlselect');
 };
 
 /*--deselectPanel(name)------------------------------------
@@ -618,6 +622,9 @@ ControlPanel.prototype.deselectPanel = function(name){
   } else {
     this.selected.splice(this.selected.indexOf(name), 1);
   }
+
+  $('#'+this.container).trigger('controlselection');
+  $('#'+this.container).trigger('controldeselect');
 };
 
 /*--addGroup(name, parent)---------------------------------

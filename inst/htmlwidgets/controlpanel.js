@@ -4,7 +4,7 @@ HTMLWidgets.widget({
 
   type: 'output',
 
-  factory: function(ele, width, height) {
+  factory: function(ele, width, height){
 
     var elementId = ele.id
     var cp = new ControlPanel({}, elementId);
@@ -12,7 +12,7 @@ HTMLWidgets.widget({
     var initialized = false;
 
     return {
-      renderValue: function(x) {
+      renderValue: function(x){
 
         var controls = JSON.parse(x.opts);
         cp.setControls(controls);
@@ -33,11 +33,15 @@ HTMLWidgets.widget({
                 Shiny.onInputChange(elementId+'_opts', x);
               }, 500);
             });
+
+            $('#'+elementId).on('controlselection', function(e){
+              Shiny.onInputChange(elementId+'_selected', cp.selected);
+            });
           };
         };
       },
 
-      resize: function (x) {
+      resize: function(x){
         return;
       },
 
