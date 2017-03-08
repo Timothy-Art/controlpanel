@@ -91,7 +91,7 @@ Returns:
 ---------------------------------------------------------*/
 AddPanel.prototype.getNext = function(){
   this.current++;
-  if(this.current == 0){
+  if (this.current == 0){
     var span = document.createElement('span');
 
     var cancel = document.createElement('span');
@@ -120,7 +120,7 @@ AddPanel.prototype.getNext = function(){
     this.stage.push(span);
 
     result = this.stage[0];
-  } else if(this.current = 1){
+  } else if (this.current = 1){
     var span = document.createElement('span')
 
     var cancel = document.createElement('span');
@@ -132,7 +132,7 @@ AddPanel.prototype.getNext = function(){
     span.appendChild(cancel);
 
     var i = document.createElement('div');
-    if(this.stage[0].children[3][0].checked){
+    if (this.stage[0].children[3][0].checked){
       i.appendChild(document.createTextNode('Name and Weight:'));
     } else {
       i.appendChild(document.createTextNode('Factor and Weight:'));
@@ -143,7 +143,7 @@ AddPanel.prototype.getNext = function(){
     span.appendChild(document.createElement('hr'));
 
     var form = document.createElement('form');
-    if(this.stage[0].children[3][0].checked){
+    if (this.stage[0].children[3][0].checked){
       form.appendChild(this.createText('f_4', 'Group Name', {width:'135px'}));
     } else {
       form.appendChild(this.createText('f_4', 'Factor', {width:'135px'}));
@@ -278,7 +278,7 @@ ControlPanel.prototype.__genNameChain__ = function(name, __pos__, __panel__, __c
   if (__pos__ === undefined){
     __pos__ = this.panels;
   };
-  if(__panel__ === undefined){
+  if (__panel__ === undefined){
     __panel__ = 'Main'
   };
   if (__chain__ === undefined){
@@ -497,10 +497,10 @@ Returns:
   (Object) Panels object
 ---------------------------------------------------------*/
 ControlPanel.prototype.retrievePanel = function(name, __pos__){
-  if(this.panels === undefined){
+  if (this.panels === undefined){
     throw ("Please buildPanels first!");
   };
-  if(__pos__ === undefined){
+  if (__pos__ === undefined){
     __pos__ = this
   }
 
@@ -517,7 +517,7 @@ ControlPanel.prototype.retrievePanel = function(name, __pos__){
       result = (this.retrievePanel(name, __pos__[keys[i]]));
     }
 
-    if(result != false){
+    if (result != false){
       return(result);
     }
   }
@@ -552,7 +552,7 @@ ControlPanel.prototype.drawPanel = function(name, anim){
   c = $("#"+con);
   ele = $("#"+con+">.panel-item-group .panel-item");
   new_ele = this.retrievePanel(name).html;
-  if(new_ele === false){
+  if (new_ele === false){
     return;
   } else {
     this.current = name;
@@ -696,7 +696,7 @@ ControlPanel.prototype.updateOptions = function(name, silent){
   if (name === undefined){
     name = this.current
     //console.log(name, this.current)
-    if(name === ''){
+    if (name === ''){
       return;
     }
   }
@@ -715,7 +715,7 @@ ControlPanel.prototype.updateOptions = function(name, silent){
   var marked = [];
 
   for (var i = 0; i < pan.childNodes.length; i++){
-    if(pan.childNodes[i].classList.contains('panel-item')){
+    if (pan.childNodes[i].classList.contains('panel-item')){
       var p = pan.childNodes[i].id;
       if (p.substr(p.length-4, p.length) !== '-add'){
         //console.log(p);
@@ -838,7 +838,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("id", name+"-flip");
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-flip panel-button'
-    if(!flipped){
+    if (!flipped){
       div.className += ' fa fa-plus';
       div.setAttribute("alt", "Invert");
       div.setAttribute("title", "Invert");
@@ -857,7 +857,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("id", name+"-lock");
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock panel-button';
-    if(locked){
+    if (locked){
       div.className += ' locked fa fa-lock'
       div.setAttribute("alt", "Unlock");
       div.setAttribute("title", "Unlock");
@@ -1090,7 +1090,7 @@ Parameters:
   name..............(String) name of the slider
 ---------------------------------------------------------*/
 function removeSlider(group, name){
-  if(!(group in groups)){
+  if (!(group in groups)){
     throw ("InvalidGroup");
   };
   if (!(name in groups[group])){
@@ -1098,7 +1098,7 @@ function removeSlider(group, name){
   };
 
   // Check if the slider is locked before removing
-  if(!groups[group][name].lock){
+  if (!groups[group][name].lock){
     // Set the value of the slider to 0 first
     balanceGroups(group, name, 0);
 
@@ -1309,7 +1309,7 @@ $(document).ready(function(){
     var cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
-    if(ele.hasClass('disabled')){
+    if (ele.hasClass('disabled')){
       alert('Slider is locked!\nPlease unlock to flip factor.')
       return;
     }
@@ -1369,7 +1369,7 @@ $(document).ready(function(){
     //console.log(this.id);
     var ele = $("#"+this.id);
 
-    if(ele.attr('disabled')){
+    if (ele.attr('disabled')){
       return;
     } else {
       ele.attr('disabled', true);
@@ -1548,7 +1548,7 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("keydown", ".slider-num", function(e){
     if (e.keyCode === 13){
-      if(Number(this.value) > 100){
+      if (Number(this.value) > 100){
         this.value = 100;
       };
       this.blur();
