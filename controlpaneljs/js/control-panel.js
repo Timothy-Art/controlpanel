@@ -253,6 +253,7 @@ Returns:
   (String) HTML elements to add for title.
 ---------------------------------------------------------*/
 ControlPanel.prototype.__genName__ = function(names){
+  console.log('name gen');
   prefix = '';
   span = document.createElement('span');
   span.className = 'panel-dir';
@@ -323,6 +324,7 @@ Builds and stores the html elements for all panels/subpanels
 based on the options passed in the constructor.
 ---------------------------------------------------------*/
 ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
+  console.log('building panels...');
   //console.log("Iteration:", __name__, "\nState:", this.panels);
   //console.log("Name", __name__);
 
@@ -644,10 +646,17 @@ ControlPanel.prototype.addGroup = function(name, parent){
     parent = this.current
   }
 
-  var opts = this.findElement(parent);
+  if (parent === 'Main'){
+    var opts = this.controls
+  } else {
+    var opts = this.findElement(parent).Factors;
+  }
+
   var pointer = this.retrievePanel(parent);
 
-  opts.unshift({Factors: [], Name: name, Weight: 0});
+  //console.log('before', opts);
+  opts.unshift({Factors: [], Name: name, Weight: 0, Flipped: false, Locked: false});
+  //console.log('after', opts);
 
   pointer[name] = {}
   pointer = pointer[name];
@@ -658,19 +667,30 @@ ControlPanel.prototype.addGroup = function(name, parent){
 
   //console.log(this.__genNameChain__(name));
   var title = this.__genName__(this.__genNameChain__(name));
-  //console.log(title);
+  console.log(title);
   pointer['html'].appendChild(title);
 
   var balance = document.createElement('span');
   balance.setAttribute('alt', 'Balance Factors');
   balance.setAttribute('title', 'Balance Factors');
-  balance.setAttribute('id', name+'-balance');
-  balance.className = 'panel-balance';
+  balance.setAttribute('id', name+'-balance')
+  balance.className = 'panel-balance balance-btn';
   var icon = document.createElement('i');
   icon.className = 'fa fa-sliders';
   icon.setAttribute('aria-hidden', 'true');
   balance.appendChild(icon);
   pointer['html'].appendChild(balance);
+
+  var reset = document.createElement('span');
+  reset.setAttribute('alt', 'Balance All');
+  reset.setAttribute('title', 'Balance All');
+  reset.setAttribute('id', 'slider-reset');
+  reset.className = 'panel-balance';
+  var icon = document.createElement('i');
+  icon.className = 'fa fa-refresh';
+  icon.setAttribute('aria-hidden', 'true');
+  reset.appendChild(icon);
+  pointer['html'].appendChild(reset);
 
   var add = document.createElement('div');
   add.className = 'panel-item panel-add';
@@ -709,7 +729,7 @@ ControlPanel.prototype.updateOptions = function(name, silent){
     var pan = this.retrievePanel(name).html;
   }
 
-  //console.log(opts);
+  //console.log('opts', opts);
   //console.log(pan);
 
   var marked = [];
@@ -1415,7 +1435,7 @@ $(document).ready(function(){
   Handles when the user hits cancel on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>.add-cancel", function(e){
-    console.log('cancel');
+    //console.log('cancel');
     ap.removeSelf();
   });
 
@@ -1454,10 +1474,11 @@ $(document).ready(function(){
         //console.log(newControl.Weight);
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
         addSlider(ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
-                  newControl.Factors, newControl.Weight, false,
+                  newControl.Factors, newControl.Weight, false, false,
                   ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
 
         if (newControl.Factors !== undefined){
+          //console.log('adding group');
           cp.addGroup(newControl.Name, ele[0].id.substr(0, ele[0].id.length-4));
         };
         //console.log(cp);
@@ -1546,7 +1567,7 @@ $(document).ready(function(){
   This will also handle when the user enters a number that is
   greater than 100.
   -------------------------------------------------------*/
-  $("body").on("keydown", ".slider-num", function(e){
+  $("body").on("keydown", ".slider-num", function(e){y
     if (e.keyCode === 13){
       if (Number(this.value) > 100){
         this.value = 100;
