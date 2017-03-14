@@ -91,7 +91,7 @@ Returns:
 ---------------------------------------------------------*/
 AddPanel.prototype.getNext = function(){
   this.current++;
-  if(this.current == 0){
+  if (this.current == 0){
     var span = document.createElement('span');
 
     var cancel = document.createElement('span');
@@ -120,7 +120,7 @@ AddPanel.prototype.getNext = function(){
     this.stage.push(span);
 
     result = this.stage[0];
-  } else if(this.current = 1){
+  } else if (this.current = 1){
     var span = document.createElement('span')
 
     var cancel = document.createElement('span');
@@ -132,7 +132,7 @@ AddPanel.prototype.getNext = function(){
     span.appendChild(cancel);
 
     var i = document.createElement('div');
-    if(this.stage[0].children[3][0].checked){
+    if (this.stage[0].children[3][0].checked){
       i.appendChild(document.createTextNode('Name and Weight:'));
     } else {
       i.appendChild(document.createTextNode('Factor and Weight:'));
@@ -143,7 +143,7 @@ AddPanel.prototype.getNext = function(){
     span.appendChild(document.createElement('hr'));
 
     var form = document.createElement('form');
-    if(this.stage[0].children[3][0].checked){
+    if (this.stage[0].children[3][0].checked){
       form.appendChild(this.createText('f_4', 'Group Name', {width:'135px'}));
     } else {
       form.appendChild(this.createText('f_4', 'Factor', {width:'135px'}));
@@ -253,6 +253,7 @@ Returns:
   (String) HTML elements to add for title.
 ---------------------------------------------------------*/
 ControlPanel.prototype.__genName__ = function(names){
+  console.log('name gen');
   prefix = '';
   span = document.createElement('span');
   span.className = 'panel-dir';
@@ -278,7 +279,7 @@ ControlPanel.prototype.__genNameChain__ = function(name, __pos__, __panel__, __c
   if (__pos__ === undefined){
     __pos__ = this.panels;
   };
-  if(__panel__ === undefined){
+  if (__panel__ === undefined){
     __panel__ = 'Main'
   };
   if (__chain__ === undefined){
@@ -323,6 +324,7 @@ Builds and stores the html elements for all panels/subpanels
 based on the options passed in the constructor.
 ---------------------------------------------------------*/
 ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
+  console.log('building panels...');
   //console.log("Iteration:", __name__, "\nState:", this.panels);
   //console.log("Name", __name__);
 
@@ -497,10 +499,10 @@ Returns:
   (Object) Panels object
 ---------------------------------------------------------*/
 ControlPanel.prototype.retrievePanel = function(name, __pos__){
-  if(this.panels === undefined){
+  if (this.panels === undefined){
     throw ("Please buildPanels first!");
   };
-  if(__pos__ === undefined){
+  if (__pos__ === undefined){
     __pos__ = this
   }
 
@@ -517,7 +519,7 @@ ControlPanel.prototype.retrievePanel = function(name, __pos__){
       result = (this.retrievePanel(name, __pos__[keys[i]]));
     }
 
-    if(result != false){
+    if (result != false){
       return(result);
     }
   }
@@ -552,7 +554,7 @@ ControlPanel.prototype.drawPanel = function(name, anim){
   c = $("#"+con);
   ele = $("#"+con+">.panel-item-group .panel-item");
   new_ele = this.retrievePanel(name).html;
-  if(new_ele === false){
+  if (new_ele === false){
     return;
   } else {
     this.current = name;
@@ -644,10 +646,17 @@ ControlPanel.prototype.addGroup = function(name, parent){
     parent = this.current
   }
 
-  var opts = this.findElement(parent);
+  if (parent === 'Main'){
+    var opts = this.controls
+  } else {
+    var opts = this.findElement(parent).Factors;
+  }
+
   var pointer = this.retrievePanel(parent);
 
-  opts.unshift({Factors: [], Name: name, Weight: 0});
+  //console.log('before', opts);
+  opts.unshift({Factors: [], Name: name, Weight: 0, Flipped: false, Locked: false});
+  //console.log('after', opts);
 
   pointer[name] = {}
   pointer = pointer[name];
@@ -658,19 +667,30 @@ ControlPanel.prototype.addGroup = function(name, parent){
 
   //console.log(this.__genNameChain__(name));
   var title = this.__genName__(this.__genNameChain__(name));
-  //console.log(title);
+  console.log(title);
   pointer['html'].appendChild(title);
 
   var balance = document.createElement('span');
   balance.setAttribute('alt', 'Balance Factors');
   balance.setAttribute('title', 'Balance Factors');
-  balance.setAttribute('id', name+'-balance');
-  balance.className = 'panel-balance';
+  balance.setAttribute('id', name+'-balance')
+  balance.className = 'panel-balance balance-btn';
   var icon = document.createElement('i');
   icon.className = 'fa fa-sliders';
   icon.setAttribute('aria-hidden', 'true');
   balance.appendChild(icon);
   pointer['html'].appendChild(balance);
+
+  var reset = document.createElement('span');
+  reset.setAttribute('alt', 'Balance All');
+  reset.setAttribute('title', 'Balance All');
+  reset.setAttribute('id', 'slider-reset');
+  reset.className = 'panel-balance';
+  var icon = document.createElement('i');
+  icon.className = 'fa fa-refresh';
+  icon.setAttribute('aria-hidden', 'true');
+  reset.appendChild(icon);
+  pointer['html'].appendChild(reset);
 
   var add = document.createElement('div');
   add.className = 'panel-item panel-add';
@@ -696,7 +716,7 @@ ControlPanel.prototype.updateOptions = function(name, silent){
   if (name === undefined){
     name = this.current
     //console.log(name, this.current)
-    if(name === ''){
+    if (name === ''){
       return;
     }
   }
@@ -709,13 +729,13 @@ ControlPanel.prototype.updateOptions = function(name, silent){
     var pan = this.retrievePanel(name).html;
   }
 
-  //console.log(opts);
+  //console.log('opts', opts);
   //console.log(pan);
 
   var marked = [];
 
   for (var i = 0; i < pan.childNodes.length; i++){
-    if(pan.childNodes[i].classList.contains('panel-item')){
+    if (pan.childNodes[i].classList.contains('panel-item')){
       var p = pan.childNodes[i].id;
       if (p.substr(p.length-4, p.length) !== '-add'){
         //console.log(p);
@@ -838,7 +858,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("id", name+"-flip");
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-flip panel-button'
-    if(!flipped){
+    if (!flipped){
       div.className += ' fa fa-plus';
       div.setAttribute("alt", "Invert");
       div.setAttribute("title", "Invert");
@@ -857,7 +877,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("id", name+"-lock");
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock panel-button';
-    if(locked){
+    if (locked){
       div.className += ' locked fa fa-lock'
       div.setAttribute("alt", "Unlock");
       div.setAttribute("title", "Unlock");
@@ -1090,7 +1110,7 @@ Parameters:
   name..............(String) name of the slider
 ---------------------------------------------------------*/
 function removeSlider(group, name){
-  if(!(group in groups)){
+  if (!(group in groups)){
     throw ("InvalidGroup");
   };
   if (!(name in groups[group])){
@@ -1098,7 +1118,7 @@ function removeSlider(group, name){
   };
 
   // Check if the slider is locked before removing
-  if(!groups[group][name].lock){
+  if (!groups[group][name].lock){
     // Set the value of the slider to 0 first
     balanceGroups(group, name, 0);
 
@@ -1309,7 +1329,7 @@ $(document).ready(function(){
     var cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
-    if(ele.hasClass('disabled')){
+    if (ele.hasClass('disabled')){
       alert('Slider is locked!\nPlease unlock to flip factor.')
       return;
     }
@@ -1369,7 +1389,7 @@ $(document).ready(function(){
     //console.log(this.id);
     var ele = $("#"+this.id);
 
-    if(ele.attr('disabled')){
+    if (ele.attr('disabled')){
       return;
     } else {
       ele.attr('disabled', true);
@@ -1415,7 +1435,7 @@ $(document).ready(function(){
   Handles when the user hits cancel on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>.add-cancel", function(e){
-    console.log('cancel');
+    //console.log('cancel');
     ap.removeSelf();
   });
 
@@ -1454,10 +1474,11 @@ $(document).ready(function(){
         //console.log(newControl.Weight);
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
         addSlider(ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
-                  newControl.Factors, newControl.Weight, false,
+                  newControl.Factors, newControl.Weight, false, false,
                   ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
 
         if (newControl.Factors !== undefined){
+          //console.log('adding group');
           cp.addGroup(newControl.Name, ele[0].id.substr(0, ele[0].id.length-4));
         };
         //console.log(cp);
@@ -1546,9 +1567,9 @@ $(document).ready(function(){
   This will also handle when the user enters a number that is
   greater than 100.
   -------------------------------------------------------*/
-  $("body").on("keydown", ".slider-num", function(e){
+  $("body").on("keydown", ".slider-num", function(e){y
     if (e.keyCode === 13){
-      if(Number(this.value) > 100){
+      if (Number(this.value) > 100){
         this.value = 100;
       };
       this.blur();
