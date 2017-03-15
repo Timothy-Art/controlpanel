@@ -253,7 +253,7 @@ Returns:
   (String) HTML elements to add for title.
 ---------------------------------------------------------*/
 ControlPanel.prototype.__genName__ = function(names){
-  console.log('name gen');
+  //console.log('name gen');
   prefix = '';
   span = document.createElement('span');
   span.className = 'panel-dir';
@@ -324,7 +324,7 @@ Builds and stores the html elements for all panels/subpanels
 based on the options passed in the constructor.
 ---------------------------------------------------------*/
 ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
-  console.log('building panels...');
+  //console.log('building panels...');
   //console.log("Iteration:", __name__, "\nState:", this.panels);
   //console.log("Name", __name__);
 
@@ -667,7 +667,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
 
   //console.log(this.__genNameChain__(name));
   var title = this.__genName__(this.__genNameChain__(name));
-  console.log(title);
+  //console.log(title);
   pointer['html'].appendChild(title);
 
   var balance = document.createElement('span');
@@ -1085,19 +1085,15 @@ function addSlider(group, name, isGroup, weight, locked, flipped, topLevel){
   if (!(group in groups)){
     //console.log(group);
     groups[group] = {};
-
-    var div = document.createElement('div');
-    div.setAttribute('id', group);
-    div.className = 'panel-item-group';
-    var title = document.createElement('span');
-    title.className = 'panel-dir';
-    title.appendChild(document.createTextNode(group));
-    div.appendChild(title);
-    document.getElementById('control-content').appendChild(div);
   }
   groups[group][name] = {value: weight*100*precision, lock: locked};
   var panel = document.getElementById(group)
-  panel.insertBefore(ControlSlider(name, isGroup, weight, locked, flipped, topLevel), panel.childNodes[4]);
+  if(typeof panel.childNodes[4] === 'undefined'){
+    //console.log('blank');
+    panel.appendChild(ControlSlider(name, isGroup, weight, locked, flipped, topLevel));
+  } else {
+    panel.insertBefore(ControlSlider(name, isGroup, weight, locked, flipped, topLevel), panel.childNodes[4]);
+  }
   balanceGroups(group, name, weight*100*precision);
 
   //console.log(groups);
