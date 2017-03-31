@@ -5,7 +5,7 @@ Creates a control panel for weighting and organizing financial factors. The curr
 
 ## Installation
 
-Install the package using `devtools::install_git('https://gitlab.com/timothy-art/controlpanel/', credentials=git2r::cred_user_pass())`. To get it to work from gitlab, you will need to supply the function with a credentials token from the `git2r` package. Pass the `cred_user_pass()` your gitlab username (not email), and your password. 
+Install the package using `devtools::install_github('Timothy-Art/controlpanel')`.
 
 ## The Control Panel Widget
 
