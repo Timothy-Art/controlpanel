@@ -6,8 +6,6 @@
 #'
 #' @export
 controlpanel <- function(opts, factor_list, width = NULL, height = NULL, elementId = NULL) {
-
-  # forward options using x
   require(rjson)
 
   data <- toJSON(opts)

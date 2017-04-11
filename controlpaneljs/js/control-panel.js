@@ -327,9 +327,13 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
   //console.log('building panels...');
   //console.log("Iteration:", __name__, "\nState:", this.panels);
   //console.log("Name", __name__);
-
   if (__iter__ == undefined){
     //console.log('start');
+    //console.log(Object.keys(this.panels).length);
+    if (Object.keys(this.panels).length != 0){
+      this.panels = {};
+      this.current = '';
+    };
     __iter__ = this.controls;
     __pos__ = this.panels;
     __name__ = ["Main"];
@@ -1221,7 +1225,7 @@ $(document).ready(function(){
     var keys = Object.keys(groups)
     var poi;
 
-    console.log(keys);
+    //console.log(keys);
 
     for (i in keys){
       var temp = keys[i];
@@ -1232,7 +1236,7 @@ $(document).ready(function(){
         //console.log('Not Main');
         poi = poi.Factors;
       }
-      console.log('poi', poi);
+      //console.log('poi', poi);
       resetGroups(temp);
       newVal = 1 / poi.length;
 
