@@ -6,7 +6,7 @@ HTMLWidgets.widget({
 
   factory: function(ele, width, height){
 
-    var elementId = ele.id
+    var elementId = ele.id;
     var cp = new ControlPanel({}, elementId);
     var timeout;
     var initialized = false;
@@ -15,6 +15,9 @@ HTMLWidgets.widget({
       renderValue: function(x){
 
         var controls = JSON.parse(x.opts);
+        var factors = JSON.parse(x.factors);
+
+        cp.setSelections(factors);
         cp.setControls(controls);
         cp.buildPanels();
         cp.drawPanel("Main");

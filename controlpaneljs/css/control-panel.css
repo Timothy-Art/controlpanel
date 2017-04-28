@@ -259,11 +259,71 @@ h2 {
 .add-content>form>input[type=text]::-moz-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.add-content>form>input[type=text]:-moz-placeholder {
+.add-content>form>input[type=text]::-ms-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
 }
-.add-content>form>input[type=text]:-ms-input-placeholder {
+
+.add-content>form>.selectize-dropdown, .selectize-dropdown.form-control {
+	background-color: #ff4488;
+	border: solid 1px rgba(255, 255, 255, 0.15) !important;
+  border-radius: 0;
+	box-shadow: none;
+}
+.add-content>form>.selectize-dropdown-content {
+	padding: 5px 0;
   color: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.4);
+  border: solid 1px rgba(255, 255, 255, 0.15) !important;
+}
+.add-content>form>.selectize-dropdown-content>.active{
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>.add-content-selectize {
+  position: relative;
+  display: inline;
+}
+.add-content>form>.add-content-selectize>.selectize-input {
+  width: 135px;
+  height: 32px;
+  min-height: 0;
+  padding: 5px 10px;
+  transform: translateY(11px);
+  border: solid 1px rgba(255, 255, 255, 0.15);
+  border-radius: 0px;
+  background-color: rgba(255, 255, 255, 0.33);
+  background-image: none;
+  color: white;
+  box-shadow: none;
+}
+.add-content>form>.add-content-selectize>.selectize-input::after {
+  border-color: rgba(255,255,255,0.33) transparent transparent transparent;
+}
+.add-content>form>.add-content-selectize>.selectize-input.focus {
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>.add-content-selectize>.selectize-input.focus::after {
+  border-color: #901155 transparent transparent transparent;
+}
+.add-content>form>.add-content-selectize>.selectize-input.dropdown-active {
+  background-color: white;
+  color: #901155;
+}
+.add-content>form>.add-content-selectize>.selectize-input.dropdown-active::after {
+  border-color: transparent transparent #901155 transparent;
+}
+.add-content>form>.add-content-selectize>.selectize-input>input[type=text] {
+  color: #901155;
+}
+.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-webkit-input-placeholder {
+  color: rgba(255, 255, 255, 0.5)
+}
+.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-moz-placeholder {
+  color: rgba(255, 255, 255, 0.5)
+}
+.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5)
 }
 
 .panel-dir {

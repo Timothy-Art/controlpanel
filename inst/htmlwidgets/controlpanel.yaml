@@ -1,11 +1,11 @@
 dependencies:
   - name: controlpanel
-    version: 0.1.1
+    version: 0.2.0
     src: htmlwidgets/lib/controlpanel
     script:
       - control-panel.js
       - inputTypeNumberPolyfill.js
-      - side-panel.js
+      - selectize.min.js
     stylesheet:
+      - selectize.single.css
       - control-panel.css
-      - side-panel.css

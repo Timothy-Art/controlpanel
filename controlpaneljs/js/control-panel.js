@@ -9,13 +9,15 @@ different screens.
 Properties:
   stage.............(Object) Containing HTML for each form
   current...........(Number) current stage in the form
+  factorSelections..(Array<String>) factors to choose from
 Functions:
-  createRadio(), createText(), createButton(),
-  getNext(), getData(), removeSelf()
+  createRadio(), createText(), createSelect(),
+  createButton(), getNext(), getData(), removeSelf()
 ---------------------------------------------------------*/
-function AddPanel(){
+function AddPanel(factorSelections){
   this.stage = [];
   this.current = -1;
+  this.factorSelections = factorSelections || [];
 }
 
 /*--createRadio()------------------------------------------
@@ -65,6 +67,38 @@ AddPanel.prototype.createText = function(id, value, css){
 
   return(text);
 };
+
+/*--createRadio()------------------------------------------
+Internal function to create a text input.
+Parameters:
+  id................(String) id of text input
+  value.............(String) placeholder text for input
+  css...............(Object) key-value of css style to apply
+Returns:
+  (String) HTML of text input
+---------------------------------------------------------*/
+AddPanel.prototype.createSelect = function(id, value, css){
+  var input = document.createElement('select');
+  input.setAttribute('id', id);
+  input.setAttribute('placeholder', value);
+  input.style[Object.keys(css)] = css[Object.keys(css)];
+  input.className += 'add-content-selectize';
+
+  var opt = document.createElement('option');
+  opt.setAttribute('value', "")
+  opt.appendChild(document.createTextNode(value));
+  input.appendChild(opt);
+
+  for (i in this.factorSelections){
+    opt = document.createElement('option')
+    opt.setAttribute('value', this.factorSelections[i]);
+    opt.appendChild(document.createTextNode(this.factorSelections[i]));
+    input.appendChild(opt);
+  };
+
+  return(input);
+};
+
 
 /*--createRadio()------------------------------------------
 Internal function to create a next button.
@@ -146,7 +180,12 @@ AddPanel.prototype.getNext = function(){
     if (this.stage[0].children[3][0].checked){
       form.appendChild(this.createText('f_4', 'Group Name', {width:'135px'}));
     } else {
-      form.appendChild(this.createText('f_4', 'Factor', {width:'135px'}));
+      var selInput = this.createSelect('f_4', 'Factor', {width:'135px'})
+      //console.log(selInput);
+      form.appendChild(selInput);
+      $(selInput).selectize({
+        create: true
+      });
     };
     form.appendChild(this.createText('f_5', 'Weight', {width:'65px'}));
     form.appendChild(document.createElement('br'));
@@ -170,6 +209,8 @@ Returns:
 ---------------------------------------------------------*/
 AddPanel.prototype.getData = function(){
   var slider = {};
+  var name = this.stage[1].children[3][0].value;
+  name = name.replace(/\s+/g, '_');
 
   if (this.stage.length != 2){
     throw("FormIncomplete");
@@ -179,7 +220,7 @@ AddPanel.prototype.getData = function(){
     slider["Factors"] = {};
   }
 
-  slider["Name"] = this.stage[1].children[3][0].value;
+  slider["Name"] = name;
   slider["Weight"] = Number(this.stage[1].children[3][1].value)/100;
   slider["Locked"] = false;
 
@@ -220,6 +261,8 @@ html container id to place the panel in.
 Parameters:
   options...........(Object) from a configurations json
   containerId.......(String) div id
+  factorSelections..(Array<String>) factors to choose from
+                                    when adding
 Properties:
   selected..........(Array) list of the panels selected
   panels............(Object) containing the html elements,
@@ -228,19 +271,22 @@ Properties:
   controls..........(Object) configuration based on the options
   misc..............(Object) extra options
   current...........(String) name of the currently displayed group
+  factorSelections..(Array<String>) factors to choose from
+                                    when adding
 Functions:
   setControls(options), buildPanels(), findElement(name),
   findParent(name), retrievePanel(name), drawPanel(name),
   erasePanel(), clearPanels(), selectPanel(), deselectPanel(),
   addGroup(name, parent), updateOptions(name), getOptions()
 ---------------------------------------------------------*/
-function ControlPanel(options, containerId){
+function ControlPanel(options, containerId, factorSelections){
   this.selected = [];
   this.panels = {};
   this.container = containerId;
   this.controls = options.Options;
   this.misc = [options.DateCreated, options.ManagerID, options.ID, options.Name, options.Tickers, options.ProfileName];
   this.current = '';
+  this.factorSelections = factorSelections || [];
 
   $("#"+this.container).data({cp: this});
 };
@@ -319,6 +365,16 @@ ControlPanel.prototype.setControls = function(options){
   this.current = '';
 };
 
+/*--setSelections(factors)---------------------------------
+Resets the the factorSelections property
+Parameters:
+  factors...........(Array<String>) of factors
+---------------------------------------------------------*/
+ControlPanel.prototype.setSelections = function(factors){
+  this.factorSelections = factors || [];
+};
+
+
 /*--buildPanels()------------------------------------------
 Builds and stores the html elements for all panels/subpanels
 based on the options passed in the constructor.
@@ -395,6 +451,12 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       this.buildPanels(__iter__[i].Factors, __pos__[__iter__[i].Name], __name__);
       __name__.shift();
     } else {
+      var factor = __iter__[i].Name;
+      factor = this.factorSelections.indexOf(factor);
+      if (factor >= 0){
+        this.factorSelections.splice(factor, 1);
+      };
+
       groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
       __pos__['html'].appendChild(ControlSlider(__iter__[i].Name, false, __iter__[i].Weight, __iter__[i].Locked || false, __iter__[i].Flipped || false, __name__[0]=='Main'));
     }
@@ -1394,6 +1456,8 @@ $(document).ready(function(){
   $("body").on("click", ".panel-add", function(e){
     //console.log(this.id);
     var ele = $("#"+this.id);
+    var cp = ele[0].parentNode.parentNode.id;
+    cp = $("#"+cp).data('cp');
 
     if (ele.attr('disabled')){
       return;
@@ -1402,7 +1466,7 @@ $(document).ready(function(){
     }
 
     ap.removeSelf();
-    ap = new AddPanel()
+    ap = new AddPanel(cp.factorSelections);
 
     $("#"+this.id+">i").animate({
       marginLeft: "-100%", opacity: "0"
@@ -1486,6 +1550,11 @@ $(document).ready(function(){
         if (newControl.Factors !== undefined){
           //console.log('adding group');
           cp.addGroup(newControl.Name, ele[0].id.substr(0, ele[0].id.length-4));
+        } else {
+          var item = cp.factorSelections.indexOf(newControl.Name);
+          if (item >= 0){
+            cp.factorSelections.splice(item, 1);
+          };
         };
         //console.log(cp);
         cp.updateOptions();

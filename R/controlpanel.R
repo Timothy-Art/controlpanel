@@ -5,7 +5,7 @@
 #' @import htmlwidgets
 #'
 #' @export
-controlpanel <- function(opts, factor_list, width = NULL, height = NULL, elementId = NULL) {
+controlpanel <- function(opts, factor_list=c(), width = NULL, height = NULL, elementId = NULL) {
   require(rjson)
 
   data <- toJSON(opts)
