@@ -15,7 +15,8 @@ HTMLWidgets.widget({
       renderValue: function(x){
 
         var controls = JSON.parse(x.opts);
-        var factors = JSON.parse(x.factors);
+        var factors = x.factors;
+        console.log(factors);
 
         cp.setSelections(factors);
         cp.setControls(controls);
