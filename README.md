@@ -38,7 +38,7 @@ To create the control panel, call `controlpanel(opts, factor_list, ...)`
 
 `opts` is a list object that provides instructions on how to create the control panel. An example of how this opts list is structured can be found in the example folder.
 
-`factor_list` is a planned feature for adding in new factors. For now, leave it as NA.
+`factor_list` is a vector of factor names for when the user wants to add a new segment. These names will be made available in the add panel, and the control panel will dynamically remove added items from the list so as to not duplicate any segments. 
 
 ## Shiny
 
