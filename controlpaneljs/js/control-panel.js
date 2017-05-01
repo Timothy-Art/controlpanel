@@ -1,6 +1,4 @@
-var groups = {};
 var precision = 1000;
-var ap = new AddPanel();
 var topPanels = 3;
 
 /*--ControlSlider(options, containerId)--------------------
@@ -273,6 +271,8 @@ Properties:
   current...........(String) name of the currently displayed group
   factorSelections..(Array<String>) factors to choose from
                                     when adding
+  groups............(Object) containing each panel group
+  ap................(AddPanel) AddPanel object
 Functions:
   setControls(options), buildPanels(), findElement(name),
   findParent(name), retrievePanel(name), drawPanel(name),
@@ -287,6 +287,8 @@ function ControlPanel(options, containerId, factorSelections){
   this.misc = [options.DateCreated, options.ManagerID, options.ID, options.Name, options.Tickers, options.ProfileName];
   this.current = '';
   this.factorSelections = factorSelections || [];
+  this.groups = {}
+  this.ap = new AddPanel();
 
   $("#"+this.container).data({cp: this});
 };
@@ -393,7 +395,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
     __iter__ = this.controls;
     __pos__ = this.panels;
     __name__ = ["Main"];
-    groups[__name__[0]] = {};
+    this.groups[__name__[0]] = {};
   };
 
   for (var i = 0; i < __iter__.length; i++){
@@ -442,8 +444,8 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
     }
 
     if (__iter__[i].Factors !== undefined){
-      groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
-      groups[__iter__[i].Name] = {};
+      this.groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
+      this.groups[__iter__[i].Name] = {};
 
       __pos__['html'].appendChild(ControlSlider(__iter__[i].Name, true, __iter__[i].Weight, __iter__[i].Locked || false, __iter__[i].Flipped || false, __name__[0]=='Main'));
       __pos__[__iter__[i].Name] = {};
@@ -457,7 +459,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
         this.factorSelections.splice(factor, 1);
       };
 
-      groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
+      this.groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
       __pos__['html'].appendChild(ControlSlider(__iter__[i].Name, false, __iter__[i].Weight, __iter__[i].Locked || false, __iter__[i].Flipped || false, __name__[0]=='Main'));
     }
   };
@@ -1042,9 +1044,10 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
 Resets all unlocked sliders in each group to equal values.
 If an array of groups is provided, will only reset those.
 Parameters:
+  groups............(Object) containing all of the groups
   group.............(Array) groups names
 ---------------------------------------------------------*/
-function resetGroups(group){
+function resetGroups(groups, group){
   var reset = typeof group === "undefined" ? Object.keys(groups) : [group];
 
   for (i in reset){
@@ -1071,13 +1074,14 @@ function resetGroups(group){
 /*--balanceGroups(change)----------------------------------
 Balances the unlocked sliders.
 Parameters:
+  groups.............(Object) containig all of the groups
   groupName..........(String) name of group to balance
   sliderName.........(String) name of slider being changed
   update.............(Number) new value of changed slider
 Returns:
   (Boolean) if change was made to slider
 ---------------------------------------------------------*/
-function balanceGroups(groupName, sliderName, update){
+function balanceGroups(groups, groupName, sliderName, update){
   //console.log(groupName, sliderName, update);
   var old = groups[groupName][sliderName].value;
 
@@ -1128,6 +1132,7 @@ Adds a new slider with the given name to the given group
 and places it in the DOM. If the group doesn't exist,
 it will be created instead.
 Parameters:
+  groups............(Object) containing all of the groups
   group.............(String) name of the group to add to
   name..............(String) name of the slider
   isGroup...........(Boolean) if new slider is a group
@@ -1137,7 +1142,7 @@ Parameters:
   topLevel..........(Boolean) if the new slider is part of
                               the top level
 ---------------------------------------------------------*/
-function addSlider(group, name, isGroup, weight, locked, flipped, topLevel){
+function addSlider(groups, group, name, isGroup, weight, locked, flipped, topLevel){
   if (isGroup === undefined){
     isGroup = false;
   };
@@ -1166,7 +1171,7 @@ function addSlider(group, name, isGroup, weight, locked, flipped, topLevel){
   } else {
     panel.insertBefore(ControlSlider(name, isGroup, weight, locked, flipped, topLevel), panel.childNodes[4]);
   }
-  balanceGroups(group, name, weight*100*precision);
+  balanceGroups(groups, group, name, weight*100*precision);
 
   //console.log(groups);
 }
@@ -1174,10 +1179,11 @@ function addSlider(group, name, isGroup, weight, locked, flipped, topLevel){
 /*--removeSlider(group, name)---------------------------------
 Removes a slider with the given name from the given group.
 Parameters:
+  groups............(Object) containing all of the groups
   group.............(String) name of the group to add to
   name..............(String) name of the slider
 ---------------------------------------------------------*/
-function removeSlider(group, name){
+function removeSlider(groups, group, name){
   if (!(group in groups)){
     throw ("InvalidGroup");
   };
@@ -1188,7 +1194,7 @@ function removeSlider(group, name){
   // Check if the slider is locked before removing
   if (!groups[group][name].lock){
     // Set the value of the slider to 0 first
-    balanceGroups(group, name, 0);
+    balanceGroups(groups, group, name, 0);
 
     // Checking if the slider is not 0 (because of locked sliders)
     if (groups[group][name].value != 0){
@@ -1212,7 +1218,7 @@ function removeSlider(group, name){
 
       };
       // reset groups to be balanced
-      resetGroups(group, name, 0);
+      resetGroups(groups, group, name, 0);
 
       // Re-locking sliders
       for (i in locked){
@@ -1225,10 +1231,6 @@ function removeSlider(group, name){
     delete groups[group][name];
     $("#"+name).remove();
 
-    if (Object.keys(groups[group]).length == 0){
-      delete groups[group];
-      $("#"+group).remove();
-    }
   } else {
     alert('Slider is locked!\nPlease unlock to delete.');
   };
@@ -1284,6 +1286,7 @@ $(document).ready(function(){
 
     var controls = cp.controls;
     var current = cp.current;
+    var groups = cp.groups;
     var keys = Object.keys(groups)
     var poi;
 
@@ -1299,7 +1302,7 @@ $(document).ready(function(){
         poi = poi.Factors;
       }
       //console.log('poi', poi);
-      resetGroups(temp);
+      resetGroups(groups, temp);
       newVal = 1 / poi.length;
 
       for (j in poi){
@@ -1323,10 +1326,10 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".balance-btn", function(e){
     //console.log('balanced', this.id.substr(0, this.id.length-8));
-    resetGroups(this.id.substr(0, this.id.length-8));
-
     var cp = this.parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
+
+    resetGroups(cp.groups, this.id.substr(0, this.id.length-8));
     cp.updateOptions();
   });
 
@@ -1339,8 +1342,13 @@ $(document).ready(function(){
 
     var cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
+    var keys = Object.keys(cp.groups);
 
-    removeSlider(group, ele);
+    removeSlider(cp.groups, group, ele);
+
+    if (keys.indexOf(ele) < 0){
+      cp.factorSelections.push(ele);
+    };
     cp.updateOptions();
   });
 
@@ -1367,7 +1375,7 @@ $(document).ready(function(){
 
       $('#' + this.id.substr(0, this.id.length-5) + '>.panel-destroy').removeClass('disabled');
       $('#' + this.id.substr(0, this.id.length-5) + '>.panel-flip').removeClass('disabled');
-      groups[group][this.id.substr(0, this.id.length-5)].lock = false;
+      cp.groups[group][this.id.substr(0, this.id.length-5)].lock = false;
     } else {
       ele.addClass('locked');
       ele.removeClass('fa-unlock-alt');
@@ -1379,7 +1387,7 @@ $(document).ready(function(){
 
       $('#' + this.id.substr(0, this.id.length-5) + '>.panel-destroy').addClass('disabled');
       $('#' + this.id.substr(0, this.id.length-5) + '>.panel-flip').addClass('disabled');
-      groups[group][this.id.substr(0, this.id.length-5)].lock = true;
+      cp.groups[group][this.id.substr(0, this.id.length-5)].lock = true;
     };
 
     cp.updateOptions(name=group,silent=true);
@@ -1408,14 +1416,14 @@ $(document).ready(function(){
       ele.attr("alt", "Invert");
       ele.attr("title", "Invert");
 
-      groups[group][this.id.substr(0, this.id.length-5)].flipped = false;
+      cp.groups[group][this.id.substr(0, this.id.length-5)].flipped = false;
     } else {
       ele.removeClass('fa-plus');
       ele.addClass('fa-minus');
       ele.attr("alt", "Normal");
       ele.attr("title", "Normal");
 
-      groups[group][this.id.substr(0, this.id.length-5)].flipped = true;
+      cp.groups[group][this.id.substr(0, this.id.length-5)].flipped = true;
     };
 
     cp.updateOptions();
@@ -1465,8 +1473,8 @@ $(document).ready(function(){
       ele.attr('disabled', true);
     }
 
-    ap.removeSelf();
-    ap = new AddPanel(cp.factorSelections);
+    cp.ap.removeSelf();
+    cp.ap = new AddPanel(cp.factorSelections);
 
     $("#"+this.id+">i").animate({
       marginLeft: "-100%", opacity: "0"
@@ -1482,7 +1490,7 @@ $(document).ready(function(){
         ele.removeClass('panel-add');
         ele.addClass('panel-add-text');
 
-        form = $(ap.getNext());
+        form = $(cp.ap.getNext());
 
         ele.append(form.css({opacity: 0}));
         ele.attr('disabled', false);
@@ -1505,8 +1513,11 @@ $(document).ready(function(){
   Handles when the user hits cancel on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>.add-cancel", function(e){
-    //console.log('cancel');
-    ap.removeSelf();
+    var ele = this;
+    var cp = ele.parentNode.parentNode.parentNode.parentNode.id;
+    console.log(cp);
+    cp = $("#"+cp).data('cp');
+    cp.ap.removeSelf();
   });
 
   /*--add-content>button click function--------------------
@@ -1521,14 +1532,14 @@ $(document).ready(function(){
 
     //console.log(ele[0].id);
     if (this.id == 'f_3'){
-      var form = $(ap.getNext());
+      var form = $(cp.ap.getNext());
 
       $('#'+ele[0].id+'>.add-content').remove();
       ele.append(form.css({opacity: 0}));
       form.animate({opacity: '1'}, {duration: 200});
       //console.log(ap);
     } else if (this.id == 'f_6'){
-      newControl = ap.getData();
+      newControl = cp.ap.getData();
       verify = verifyControl(newControl, cp);
       var errPage = $('#'+ele[0].id+'>.add-content>#add-error');
       typeof errPage !== 'undefined' ? errPage.remove() : null;
@@ -1540,10 +1551,10 @@ $(document).ready(function(){
             "name, please use a unique name.") + "</span>")
         );
       } else {
-        ap.removeSelf();
+        cp.ap.removeSelf();
         //console.log(newControl.Weight);
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
-        addSlider(ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
+        addSlider(cp.groups, ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
                   newControl.Factors, newControl.Weight, false, false,
                   ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
 
@@ -1568,14 +1579,13 @@ $(document).ready(function(){
   Swaps the panel forward to what is in a group.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-group>label", function(e){
-    ap.removeSelf();
     var ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-13)
-
-    $($('#'+ele+'>.scroll-label')[0].lastChild).stop().css({"left": 0});
-    //console.log(ele);
     var cp = $("#"+ele)[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
-    //console.log(cp);
+
+    cp.ap.removeSelf();
+
+    $($('#'+ele+'>.scroll-label')[0].lastChild).stop().css({"left": 0});
     cp.drawPanel(ele);
   })
 
@@ -1610,9 +1620,10 @@ $(document).ready(function(){
   directory.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-dir>span", function(e){
-    ap.removeSelf();
     var ele = $(e.currentTarget)[0].parentNode.parentNode.parentNode.id;
     var cp = $("#"+ele).data('cp');
+
+    cp.ap.removeSelf();
     //console.log(e.currentTarget.innerHTML);
     cp.drawPanel(e.currentTarget.innerHTML);
   })
@@ -1631,7 +1642,7 @@ $(document).ready(function(){
     var label = $('#' + e.target.id + '-num');
     label.val(this.value);
 
-    silent = balanceGroups(group, e.target.id.substr(0, e.target.id.length-7), Number(this.value)*precision);
+    silent = balanceGroups(cp.groups, group, e.target.id.substr(0, e.target.id.length-7), Number(this.value)*precision);
     //console.log(silent);
     cp.updateOptions(group, !silent);
   });
@@ -1681,7 +1692,7 @@ $(document).ready(function(){
 
     slider.val(value/precision);
 
-    silent = balanceGroups(group, e.target.id.substr(0, e.target.id.length-11), value);
+    silent = balanceGroups(cp.groups, group, e.target.id.substr(0, e.target.id.length-11), value);
     //console.log('slider-num', silent);
     cp.updateOptions(group, !silent);
   });

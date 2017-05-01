@@ -1,6 +1,6 @@
 dependencies:
   - name: controlpanel
-    version: 0.2.0
+    version: 0.3.0
     src: htmlwidgets/lib/controlpanel
     script:
       - control-panel.js
