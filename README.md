@@ -15,16 +15,16 @@ Along the top left of the control panel container, there is a directory of the c
 
 #### Segment Controls
 
-In each panel, at the top, there is an `Add` segment which, when clicked, will begin the process for adding a new factor or group. When adding a new factor/group, the name must be unique, and when adding a factor, in particular, the name should be linked to some data column name. The weight can be left blank when adding a new factor and it will default to 0. You can cancel this process at any time by pressing the `x` button in the top right.
+In each panel, at the top, there is an `Add` segment which, when clicked, will begin the process for adding a new factor or group. When adding a new factor/group, the name must be unique. For adding factors, if a factorList has been supplied to the function, this list will be made available with a dropdown menu, otherwise, new factors can be added by typing in the box and adding a new option. The options will automatically remove themselves when selected and add back if a panel is deleted. The weight can be left blank when adding a new factor and it will default to 0. You can cancel this process at any time by pressing the `x` button in the top right.
 
-Each segment has a number of different features. Along the top of each segment, there are a number of controls. From left to right there is:
+Along the top of each segment, there are a number of controls. From left to right:
 
 1. Select - Click to toggle a segment's selected state.
-2. Lock - Click to toggle a segment's locked state. When locked, the slider and numerical inputs will be disabled, and users will be prevented from flipping or deleting the segment.
+2. Lock - Click to toggle a segment's locked state. When locked, the slider and numerical inputs will be disabled, and users will be prevented from inverting or deleting the segment.
 3. Invert - Click to toggle a segment's flipped state. This will tell the back end to invert the data.
 4. Delete - Removes the segment.
 
-Segments also feature a slider and the number on the side can be clicked for numerical input. Sliders in the same panel will balance (to the best that they can) themselves automatically. To prevent this from happening, you can lock the segment. Groups of factors can also be clicked to dive into the group. Upon this, the panel will refresh with the contents of the clicked group. Groups and factors at the top level, will not display a slider or numerical input.
+Segments also feature a slider and the number on the side can be clicked for numerical input. Sliders in the same panel will balance (to the best that they can) themselves automatically. To prevent this from happening, you can lock the segment. Groups of factors can also be clicked to dive into the group. Upon this, the panel will refresh with the contents of the clicked group. Groups and factors at the top level will not display a slider or numerical input.
 
 #### Control Panel Features
 
@@ -34,11 +34,13 @@ The control panel can also be nested as deep as you would like. However, each la
 
 ## Usage
 
-To create the control panel, call `controlpanel(opts, factor_list, ...)`
+To create the control panel, call `controlpanel(opts, factorList, multiSelect, ...)`
 
 `opts` is a list object that provides instructions on how to create the control panel. An example of how this opts list is structured can be found in the example folder.
 
-`factor_list` is a vector of factor names for when the user wants to add a new segment. These names will be made available in the add panel, and the control panel will dynamically remove added items from the list so as to not duplicate any segments. 
+`factorList` is a vector of factor names for when the user wants to add a new segment. These names will be made available in the add panel, and the control panel will dynamically remove added items from the list so as to not duplicate any segments.
+
+`multiSelect` is a boolean indicating whether multiple selection bubbles can be toggled at once. This defaults to false.
 
 ## Shiny
 

@@ -51,7 +51,7 @@
     <script>
       var obj = '{"ManagerID": 0,"ID": 0,"Name": "Tim Art","DateCreated": "2017-01-06 11:17:00","ProfileName": "Profile_1","Tickers": ["AAPL US"],"Options": [{"Name": "Quality","Weight": 0.50,"Factors": [{"Name": "Profitability_123456789123456789123456789","Weight": 0.5,"Locked":true,"Factors": [{"Name": "GPOA", "Weight": 0.2},{"Name": "ROA", "Weight": 0.2},{"Name": "CFOA", "Weight": 0.2},{"Name": "GMOR", "Weight": 0.2},{"Name": "Acc", "Weight": 0.2}]},{"Name": "Safety","Weight": 0.5,"Factors": [{"Name": "BAB", "Weight": 0.167},{"Name": "IVOL", "Weight": 0.167},{"Name": "LEV", "Weight": 0.167},{"Name": "O", "Weight": 0.167},{"Name": "Z", "Weight": 0.166},{"Name": "EVOL", "Weight": 0.166}]}]},{"Name": "Valuation","Weight": 0.25,"Factors": [{"Name": "Sales", "Weight": 0.25},{"Name": "Book", "Weight": 0.25},{"Name": "CF", "Weight": 0.25},{"Name": "Earnings","Weight": 0.25,"Factors": [{"Name": "PE", "Weight": 0.5},{"Name": "PET+1", "Weight": 0.5}]}]},{"Name": "Technical","Weight": 0.25,"Factors": [{"Name": "RSI", "Weight": 1}]}]}'
       var controls = JSON.parse(obj);
-      var cp = new ControlPanel(controls, 'control-content', ['factor_1', 'factor_2'], true);
+      var cp = new ControlPanel(controls, 'control-content', ['factor_1', 'factor_2'], false);
       //$("#control-content").data('cp', cp);
       cp.buildPanels();
       //console.log(cp);
