@@ -5,14 +5,15 @@
 #' @import htmlwidgets
 #'
 #' @export
-controlpanel <- function(opts, factor_list=c(), width = NULL, height = NULL, elementId = NULL) {
+controlpanel <- function(opts, factorList=c(), multiSelect=FALSE, width = NULL, height = NULL, elementId = NULL) {
   require(rjson)
 
   data <- toJSON(opts)
 
   x <- list(
     opts = data,
-    factors = factor_list
+    factors = factorList,
+    multiSelect = multiSelect
   )
 
   # create widget

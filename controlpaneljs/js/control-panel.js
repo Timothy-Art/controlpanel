@@ -261,6 +261,8 @@ Parameters:
   containerId.......(String) div id
   factorSelections..(Array<String>) factors to choose from
                                     when adding
+  multiSelect.......(Boolean) if multiple panels can be selected,
+                              defaults to false.
 Properties:
   selected..........(Array) list of the panels selected
   panels............(Object) containing the html elements,
@@ -273,13 +275,14 @@ Properties:
                                     when adding
   groups............(Object) containing each panel group
   ap................(AddPanel) AddPanel object
+  multiSelect.......(Boolean) if multiple panels can be selected
 Functions:
   setControls(options), buildPanels(), findElement(name),
   findParent(name), retrievePanel(name), drawPanel(name),
   erasePanel(), clearPanels(), selectPanel(), deselectPanel(),
   addGroup(name, parent), updateOptions(name), getOptions()
 ---------------------------------------------------------*/
-function ControlPanel(options, containerId, factorSelections){
+function ControlPanel(options, containerId, factorSelections, multiSelect){
   this.selected = [];
   this.panels = {};
   this.container = containerId;
@@ -289,6 +292,7 @@ function ControlPanel(options, containerId, factorSelections){
   this.factorSelections = factorSelections || [];
   this.groups = {}
   this.ap = new AddPanel();
+  this.multiSelect = multiSelect || false;
 
   $("#"+this.container).data({cp: this});
 };
@@ -375,7 +379,6 @@ Parameters:
 ControlPanel.prototype.setSelections = function(factors){
   this.factorSelections = factors || [];
 };
-
 
 /*--buildPanels()------------------------------------------
 Builds and stores the html elements for all panels/subpanels
@@ -519,7 +522,7 @@ Returns parent controls object of a given element name.
 Parameters:
   name..............(String) id of the element
 Returns:
-  (Object) Parent control
+  (Array) Parent control
 ---------------------------------------------------------*/
 ControlPanel.prototype.findParent = function(name){
   recFind = function(pos, name){
@@ -571,20 +574,55 @@ ControlPanel.prototype.retrievePanel = function(name, __pos__){
     throw ("Please buildPanels first!");
   };
   if (__pos__ === undefined){
-    __pos__ = this
+    __pos__ = this.panels
   }
 
   if (name === "Main"){
     return(this.panels);
   };
 
-  var keys = Object.keys(__pos__)
+  var keys = Object.keys(__pos__);
   var result = false;
   for (i in keys){
     if (keys[i] === name){
       return (__pos__[keys[i]]);
     } else if (keys[i] !== 'html'){
       result = (this.retrievePanel(name, __pos__[keys[i]]));
+    }
+
+    if (result != false){
+      return(result);
+    }
+  }
+  return(result);
+};
+
+/*--retrievePanel(name)------------------------------------
+Returns the parent panel object of a given name.
+Parameters:
+  name..............(String) name of the panel to find the parent
+Returns:
+  (Object) Panels object
+---------------------------------------------------------*/
+ControlPanel.prototype.retrieveParent = function(name, __pos__){
+  if (this.panels === undefined){
+    throw ("Please buildPanels first!");
+  };
+  if (__pos__ === undefined){
+    __pos__ = this.panels
+  }
+
+  if (name === "Main"){
+    return(false);
+  };
+
+  var keys = Object.keys(__pos__);
+  var result = false;
+  for (i in keys){
+    if (keys[i] === name){
+      return (__pos__);
+    } else if (keys[i] !== 'html'){
+      result = (this.retrieveParent(name, __pos__[keys[i]]));
     }
 
     if (result != false){
@@ -679,9 +717,38 @@ Parameters:
 ControlPanel.prototype.selectPanel = function(name, silent){
   if (this.selected.indexOf(name) >= 0){
     return;
-  } else {
+  } else if (this.multiSelect) {
     this.selected.push(name);
-  }
+
+    var p = this.retrieveParent(name);
+    p = $(p.html.children[name].children[3]);
+    p.addClass("fa-circle");
+    p.removeClass("fa-circle-o");
+    p.attr("alt", "Deselect");
+    p.attr("title", "Deselect");
+
+  } else {
+    deselected = this.selected;
+    this.selected = [name];
+
+    var p = this.retrieveParent(name);
+    p = $(p.html.children[name].children[3]);
+    p.addClass("fa-circle");
+    p.removeClass("fa-circle-o");
+    p.attr("alt", "Deselect");
+    p.attr("title", "Deselect");
+
+
+    for (var i in deselected){
+      p = this.retrieveParent(deselected[i]);
+      p = $(p.html.children[deselected[i]].children[3]);
+      p.addClass("fa-circle-o");
+      p.removeClass("fa-circle");
+      p.attr("alt", "Select");
+      p.attr("title", "Select");
+      //console.log(p[0]);
+    };
+  };
 
   if (!silent){
     $('#'+this.container).trigger('controlselection');
@@ -696,10 +763,18 @@ Parameters:
   silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
 ControlPanel.prototype.deselectPanel = function(name, silent){
+  console.log(name, this.selected.indexOf(name));
   if (this.selected.indexOf(name) < 0){
     return;
   } else {
     this.selected.splice(this.selected.indexOf(name), 1);
+
+    var p = this.retrieveParent(name);
+    p = $(p.html.children[name].children[3]);
+    p.addClass("fa-circle-o");
+    p.removeClass("fa-circle");
+    p.attr("alt", "Select");
+    p.attr("title", "Select");
   }
 
   if (!silent){
@@ -1442,18 +1517,8 @@ $(document).ready(function(){
     cp = $("#"+cp).data('cp');
 
     if (ele.hasClass('fa-circle-o')){
-      ele.addClass('fa-circle');
-      ele.removeClass('fa-circle-o');
-      ele.attr("alt", "Deselect");
-      ele.attr("title", "Deselect");
-
       cp.selectPanel(ele[0].id.substr(0, ele[0].id.length-7));
     } else {
-      ele.removeClass('fa-circle');
-      ele.addClass('fa-circle-o');
-      ele.attr("alt", "Select");
-      ele.attr("title", "Select");
-
       cp.deselectPanel(ele[0].id.substr(0, ele[0].id.length-7));
     };
   });
@@ -1586,6 +1651,12 @@ $(document).ready(function(){
     cp.ap.removeSelf();
 
     $($('#'+ele+'>.scroll-label')[0].lastChild).stop().css({"left": 0});
+
+    var selected = cp.selected;
+    for (var i = selected.length; i >= 0; i--){
+      cp.deselectPanel(selected[i]);
+    };
+
     cp.drawPanel(ele);
   })
 

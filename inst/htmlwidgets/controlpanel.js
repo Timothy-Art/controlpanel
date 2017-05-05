@@ -7,7 +7,7 @@ HTMLWidgets.widget({
   factory: function(ele, width, height){
 
     var elementId = ele.id;
-    var cp = new ControlPanel({}, elementId);
+    var cp = new ControlPanel({}, elementId, false);
     var timeout;
     var initialized = false;
 
@@ -16,10 +16,12 @@ HTMLWidgets.widget({
 
         var controls = JSON.parse(x.opts);
         var factors = x.factors;
+        var multiSelect = x.multiSelect
         console.log(factors);
 
         cp.setSelections(factors);
         cp.setControls(controls);
+        cp.multiSelect = multiSelect;
         cp.buildPanels();
         cp.drawPanel("Main");
 

@@ -19,7 +19,7 @@ server <- function(input, output, session) {
   opts <- fromJSON(file='options.json')
 
   output$test <- renderControlpanel(
-    controlpanel(opts=opts, factor_list = NA)
+    controlpanel(opts=opts, factorList = c("Hello", "World"), multiSelect = TRUE)
   )
 
   obj <- eventReactive(input$test_opts, {
