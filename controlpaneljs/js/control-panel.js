@@ -604,31 +604,29 @@ Parameters:
 Returns:
   (Object) Panels object
 ---------------------------------------------------------*/
-ControlPanel.prototype.retrieveParent = function(name, __pos__){
-  if (this.panels === undefined){
-    throw ("Please buildPanels first!");
-  };
-  if (__pos__ === undefined){
-    __pos__ = this.panels
+ControlPanel.prototype.retrieveParent = function(name, __pos__, __pointer__){
+  if (__pos__ === undefined && __pointer__ === undefined){
+    __pos__ = this.controls;
+    __pointer__ = 'Main';
   }
 
-  if (name === "Main"){
+  if (__pos__ === undefined){
     return(false);
   };
 
-  var keys = Object.keys(__pos__);
   var result = false;
-  for (i in keys){
-    if (keys[i] === name){
-      return (__pos__);
-    } else if (keys[i] !== 'html'){
-      result = (this.retrieveParent(name, __pos__[keys[i]]));
-    }
+  for (i in __pos__){
+    if (__pos__[i].Name === name){
+      return(this.retrievePanel(__pointer__));
+    } else {
+        result = this.retrieveParent(name, __pos__[i].Factors, __pos__[i].Name);
+    };
 
     if (result != false){
       return(result);
-    }
-  }
+    };
+  };
+
   return(result);
 };
 
@@ -1695,6 +1693,11 @@ $(document).ready(function(){
     var cp = $("#"+ele).data('cp');
 
     cp.ap.removeSelf();
+
+    var selected = cp.selected;
+    for (var i = selected.length; i >= 0; i--){
+      cp.deselectPanel(selected[i]);
+    };
     //console.log(e.currentTarget.innerHTML);
     cp.drawPanel(e.currentTarget.innerHTML);
   })

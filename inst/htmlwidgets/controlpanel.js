@@ -41,7 +41,9 @@ HTMLWidgets.widget({
             });
 
             $('#'+elementId).on('controlselection', function(e){
-              Shiny.onInputChange(elementId+'_selected', cp.selected);
+              var x = cp.selected.length != 0 ? cp.selected : [-1]
+
+              Shiny.onInputChange(elementId+'_selected', x);
             });
           };
         };
