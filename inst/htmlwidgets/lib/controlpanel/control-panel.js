@@ -16,6 +16,7 @@ function AddPanel(factorSelections){
   this.stage = [];
   this.current = -1;
   this.factorSelections = factorSelections || [];
+  this.isGroup = true;
 }
 
 /*--createRadio()------------------------------------------
@@ -168,6 +169,7 @@ AddPanel.prototype.getNext = function(){
       i.appendChild(document.createTextNode('Name and Weight:'));
     } else {
       i.appendChild(document.createTextNode('Factor and Weight:'));
+      this.isGroup = false;
     };
     i.classList.add('title');
 
@@ -219,7 +221,7 @@ AddPanel.prototype.getData = function(){
   }
 
   slider["Name"] = name;
-  slider["Weight"] = Number(this.stage[1].children[3][1].value)/100;
+  slider["Weight"] = this.isGroup ? Number(this.stage[1].children[3][1].value)/100 : Number(this.stage[1].children[3][2].value)/100;
   slider["Locked"] = false;
 
   return(slider);
@@ -1615,7 +1617,7 @@ $(document).ready(function(){
         );
       } else {
         cp.ap.removeSelf();
-        //console.log(newControl.Weight);
+        console.log(newControl.Weight);
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
         addSlider(cp.groups, ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
                   newControl.Factors, newControl.Weight, false, false,
@@ -1727,7 +1729,7 @@ $(document).ready(function(){
   This will also handle when the user enters a number that is
   greater than 100.
   -------------------------------------------------------*/
-  $("body").on("keydown", ".slider-num", function(e){y
+  $("body").on("keydown", ".slider-num", function(e){
     if (e.keyCode === 13){
       if (Number(this.value) > 100){
         this.value = 100;
