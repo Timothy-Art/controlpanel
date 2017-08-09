@@ -7,6 +7,7 @@
 #' @param multiSelect TRUE/FALSE if you want the user to be able to select more than one panel at a time
 #' @return a controlpanel html widget
 #' @import htmlwidgets
+#' @import rjson
 #' 
 #' @export
 controlpanel <- function(opts, factorList=c(), multiSelect=FALSE, width = NULL, height = NULL, elementId = NULL) {

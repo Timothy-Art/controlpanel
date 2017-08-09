@@ -1,5 +1,4 @@
 # Control Panel Package for R
----
 
 Creates a control panel for weighting and organizing financial factors. The current tool allows users to add and remove groups or individual factors and assign weights using either the sliders or numerical inputs.
 
