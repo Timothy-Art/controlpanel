@@ -10,6 +10,8 @@ renderControlpanel(expr, env = parent.frame(), quoted = FALSE)
 \item{expr}{An expression that generates a controlpanel}
 
 \item{env}{The environment in which to evaluate \code{expr}.}
+
+\item{quoted}{Is expr a quoted expression (with quote())? This is useful if you want to save an expression in a variable.}
 }
 \description{
 Shiny render for controlpanelOutput

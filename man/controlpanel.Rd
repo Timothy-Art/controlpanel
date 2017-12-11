@@ -13,6 +13,13 @@ controlpanel(opts, factorList = c(), multiSelect = FALSE, width = NULL,
 \item{factorList}{a character vector of factors that will be made available in the Add Factor dropdown menu}
 
 \item{multiSelect}{TRUE/FALSE if you want the user to be able to select more than one panel at a time}
+
+\item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
+\code{'400px'}, \code{'auto'}) or a number, which will be coerced to a
+string and have \code{'px'} appended.}
+
+\item{elementId}{Use an explicit element ID for the widget (rather than an automatically generated one).
+Useful if you have other JavaScript that needs to explicitly discover and interact with a specific widget instance.}
 }
 \value{
 a controlpanel html widget

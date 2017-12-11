@@ -143,6 +143,7 @@ h2 {
   border: solid 1px #901155;
   border-radius: 1px;
   padding: 8px 10px;
+  box-shadow: rgba(80,0,20,0.75) 0px 0px 5px 0px;
 }
 
 .panel-group {
