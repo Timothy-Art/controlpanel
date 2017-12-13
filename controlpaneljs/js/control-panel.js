@@ -131,7 +131,7 @@ AddPanel.prototype.getNext = function(){
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
-    cancel.className = 'add-cancel fa fa-times';
+    cancel.className = 'add-cancel far fa-times';
 
     span.appendChild(cancel);
 
@@ -160,7 +160,7 @@ AddPanel.prototype.getNext = function(){
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
-    cancel.className = 'add-cancel fa fa-times';
+    cancel.className = 'add-cancel far fa-times';
 
     span.appendChild(cancel);
 
@@ -246,7 +246,7 @@ AddPanel.prototype.removeSelf = function(){
     }}
   )
   //console.log(ele[0].id);
-  $('#'+ele[0].id+'>i').css({'margin-left': 'inherit'}).animate({opacity: 1}, {duration: 300});
+  $('#'+ele[0].id+'>svg').css({'margin-left': 'inherit'}).animate({opacity: 1}, {duration: 300});
   ele.removeClass('panel-add-text').addClass('panel-add');
 
   var content = $(this.stage[this.current])
@@ -420,7 +420,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       balance.setAttribute('id', __name__[0]+'-balance')
       balance.className = 'panel-balance balance-btn';
       var icon = document.createElement('i');
-      icon.className = 'fa fa-sliders';
+      icon.className = 'far fa-sliders-h';
       icon.setAttribute('aria-hidden', 'true');
       balance.appendChild(icon);
       __pos__['html'].appendChild(balance);
@@ -431,7 +431,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       reset.setAttribute('id', 'slider-reset');
       reset.className = 'panel-balance';
       var icon = document.createElement('i');
-      icon.className = 'fa fa-refresh';
+      icon.className = 'far fa-undo-alt';
       icon.setAttribute('aria-hidden', 'true');
       reset.appendChild(icon);
       __pos__['html'].appendChild(reset);
@@ -440,7 +440,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       add.className = 'panel-item panel-add';
       add.setAttribute('id', __name__[0]+'-add');
       var icon = document.createElement('i');
-      icon.className = 'fa fa-plus-square-o';
+      icon.className = 'fal fa-plus-square fa-fw';
       icon.setAttribute('aria-hidden', 'true');
       add.appendChild(icon);
       span.appendChild(add);
@@ -722,8 +722,7 @@ ControlPanel.prototype.selectPanel = function(name, silent){
 
     var p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
-    p.addClass("fa-circle");
-    p.removeClass("fa-circle-o");
+    p.attr("data-prefix", "fas");
     p.attr("alt", "Deselect");
     p.attr("title", "Deselect");
 
@@ -733,8 +732,7 @@ ControlPanel.prototype.selectPanel = function(name, silent){
 
     var p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
-    p.addClass("fa-circle");
-    p.removeClass("fa-circle-o");
+    p.attr("data-prefix", "fas");
     p.attr("alt", "Deselect");
     p.attr("title", "Deselect");
 
@@ -742,8 +740,7 @@ ControlPanel.prototype.selectPanel = function(name, silent){
     for (var i in deselected){
       p = this.retrieveParent(deselected[i]);
       p = $(p.html.children[deselected[i]].children[3]);
-      p.addClass("fa-circle-o");
-      p.removeClass("fa-circle");
+      p.attr("data-prefix", "far");
       p.attr("alt", "Select");
       p.attr("title", "Select");
       //console.log(p[0]);
@@ -771,8 +768,7 @@ ControlPanel.prototype.deselectPanel = function(name, silent){
 
     var p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
-    p.addClass("fa-circle-o");
-    p.removeClass("fa-circle");
+    p.attr("data-prefix", "far");
     p.attr("alt", "Select");
     p.attr("title", "Select");
   }
@@ -825,7 +821,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
   balance.setAttribute('id', name+'-balance')
   balance.className = 'panel-balance balance-btn';
   var icon = document.createElement('i');
-  icon.className = 'fa fa-sliders';
+  icon.className = 'far fa-sliders-h';
   icon.setAttribute('aria-hidden', 'true');
   balance.appendChild(icon);
   pointer['html'].appendChild(balance);
@@ -836,7 +832,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
   reset.setAttribute('id', 'slider-reset');
   reset.className = 'panel-balance';
   var icon = document.createElement('i');
-  icon.className = 'fa fa-refresh';
+  icon.className = 'far fa-undo';
   icon.setAttribute('aria-hidden', 'true');
   reset.appendChild(icon);
   pointer['html'].appendChild(reset);
@@ -845,7 +841,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
   add.className = 'panel-item panel-add';
   add.setAttribute('id', name+'-add');
   var icon = document.createElement('i');
-  icon.className = 'fa fa-plus-square-o';
+  icon.className = 'fal fa-plus-square fa-fw';
   icon.setAttribute('aria-hidden', 'true');
   add.appendChild(icon);
   span.appendChild(add);
@@ -996,7 +992,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("alt", "Delete");
     div.setAttribute("title", "Delete");
     div.setAttribute('aria-hidden', "true");
-    div.className = 'panel-destroy panel-button-x fa fa-times';
+    div.className = 'panel-destroy panel-button-x fas fa-times fa-fw';
     //div.appendChild(document.createTextNode("\u2716"));
   }
 
@@ -1008,11 +1004,11 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-flip panel-button'
     if (!flipped){
-      div.className += ' fa fa-plus';
+      div.className += ' fas fa-plus fa-fw';
       div.setAttribute("alt", "Invert");
       div.setAttribute("title", "Invert");
     } else {
-      div.className += ' fa fa-minus';
+      div.className += ' fas fa-minus fa-fw';
       div.setAttribute("alt", "Normal");
       div.setAttribute("title", "Normal");
     }
@@ -1027,11 +1023,11 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock panel-button';
     if (locked){
-      div.className += ' locked fa fa-lock'
+      div.className += ' locked fas fa-lock fa-fw'
       div.setAttribute("alt", "Unlock");
       div.setAttribute("title", "Unlock");
     } else {
-      div.className += ' fa fa-unlock-alt'
+      div.className += ' fas fa-unlock fa-fw'
       div.setAttribute("alt", "Lock");
       div.setAttribute("title", "Lock");
     }
@@ -1045,7 +1041,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("alt", "Select");
     div.setAttribute("title", "Select");
     div.setAttribute('aria-hidden', "true");
-    div.className = 'panel-select panel-button fa fa-circle-o';
+    div.className = 'panel-select panel-button far fa-circle fa-fw';
   }
 
   slider.appendChild(div);
@@ -1058,7 +1054,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("title", name);
     if (group){
       icon = document.createElement("i");
-      icon.className = 'fa panel-button fa-plus-circle';
+      icon.className = 'fas panel-button fa-plus-circle';
       icon.setAttribute('aria-hidden', 'true');
       div.appendChild(icon);
     }
@@ -1441,7 +1437,7 @@ $(document).ready(function(){
 
     if (ele.hasClass('locked')){
       ele.removeClass('locked');
-      ele.addClass('fa-unlock-alt');
+      ele.addClass('fa-unlock');
       ele.removeClass('fa-lock');
       ele.attr("alt", "Lock");
       ele.attr("title", "Lock");
@@ -1453,7 +1449,7 @@ $(document).ready(function(){
       cp.groups[group][this.id.substr(0, this.id.length-5)].lock = false;
     } else {
       ele.addClass('locked');
-      ele.removeClass('fa-unlock-alt');
+      ele.removeClass('fa-unlock');
       ele.addClass('fa-lock');
       ele.attr("alt", "Unlock");
       ele.attr("title", "Unlock");
@@ -1516,7 +1512,7 @@ $(document).ready(function(){
     var cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
-    if (ele.hasClass('fa-circle-o')){
+    if (ele.attr('data-prefix', 'far')){
       cp.selectPanel(ele[0].id.substr(0, ele[0].id.length-7));
     } else {
       cp.deselectPanel(ele[0].id.substr(0, ele[0].id.length-7));
@@ -1541,10 +1537,10 @@ $(document).ready(function(){
     cp.ap.removeSelf();
     cp.ap = new AddPanel(cp.factorSelections);
 
-    $("#"+this.id+">i").animate({
-      marginLeft: "-100%", opacity: "0"
+    $("#"+this.id+">svg").animate({
+      marginLeft: "-150%", opacity: "0"
     }, {
-      duration: 200
+      duration: 150
     });
 
     ele.animate({

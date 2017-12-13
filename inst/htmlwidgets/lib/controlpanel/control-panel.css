@@ -206,6 +206,7 @@ h2 {
   font-weight: 200;
   margin: 4px;
   padding: 5px 10px;
+  border-radius: 1px;
   background-color: rgba(255, 255, 255, 0.33);
 }
 
@@ -223,6 +224,7 @@ h2 {
   padding: 5px 10px;
   min-width: 125px;
   border: none;
+  border-radius: 1px;
   background-color: rgba(255, 255, 255, 0.33);
 }
 .add-content>form>input[type=button]:hover {
@@ -360,15 +362,15 @@ h2 {
 .panel-item>.panel-button-x {
   position: relative;
   float: right;
-  top: -9px;
+  top: -8px;
   left: 8px;
   color: rgba(255,255,255,0.33);
   cursor: pointer;
   background-color: transparent;
   padding-top: 5px;
   text-align: center;
-  width: 20px;
   z-index: 10;
+  font-size: 16px;
 }
 
 .panel-item>.panel-button-x:hover {
@@ -388,8 +390,8 @@ h2 {
   background-color: transparent;
   padding-top: 5px;
   text-align: center;
-  width: 20px;
   z-index: 10;
+  font-size: 16px;
 }
 
 .panel-item>.panel-button:hover {
@@ -399,7 +401,10 @@ h2 {
   color: rgba(255,255,255,0.33);
 }
 
-.panel-item>.panel-select.fa-circle{
+.panel-item>.panel-lock.fa-lock{
+  color: white;
+}
+.panel-item>.panel-select[data-prefix='fas']{
   color: white;
 }
 .panel-item>.panel-flip.fa-minus{
@@ -431,7 +436,7 @@ h2 {
   position: relative;
 }
 
-.panel-group>label>i {
+.panel-group>label>.panel-button {
   display: inline-block;
   position: relative;
   width: 100%;
@@ -443,7 +448,10 @@ h2 {
   cursor: pointer;
 }
 
-.panel-add>i {
+.panel-add {
+  cursor: pointer;
+}
+.panel-add>svg {
   padding: 0px 5px;
   margin: auto;
   display: inline-block;
@@ -451,17 +459,17 @@ h2 {
   color: rgba(255, 255, 255, 0.66);
 }
 
-.panel-add>i:hover {
+.panel-add:hover>svg {
   color: white;
-  cursor: pointer;
 }
 
-.panel-add>i::after {
+.panel-add::after {
   content: "Add";
   display: inline-block;
   position: relative;
-  left: 0px;
-  bottom: 2px;
+  left: -10px;
+  bottom: 3px;
+  height: 1.15em;
   font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 200;
   font-size: 18px;
@@ -471,11 +479,11 @@ h2 {
   transition: all 0.2s ease-in-out;
 }
 
-.panel-add>i:hover::after {
+.panel-add:hover::after {
   color: white;
-  left: 5px;
+  left: 0px;
   width: 30px;
-  margin-left: 2px;
+  margin-left: 0px;
 }
 
 .panel-item>.panel-power {
