@@ -789,7 +789,7 @@ Parameters:
   silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
 ControlPanel.prototype.deselectPanel = function(name, silent){
-  console.log(name, this.selected.indexOf(name));
+  //console.log(name, this.selected.indexOf(name));
   if (this.selected.indexOf(name) < 0){
     return;
   } else {
