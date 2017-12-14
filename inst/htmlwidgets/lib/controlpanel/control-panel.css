@@ -56,12 +56,12 @@
   border: none;
   height: 20px;
   width: 5px;
-  background: #ffffff;
+  background: white;
   cursor: pointer;
   box-shadow: none;
 }
 .default.panel-item > .panel-slider:disabled::-ms-thumb {
-  background: #bbbbbb;
+  background: rgba(255, 255, 255, 0.33);
 }
 .default.panel-item > .panel-slider::-webkit-slider-runnable-track {
   width: 100%;
@@ -93,7 +93,6 @@
   cursor: pointer;
   border: none;
   background: transparent;
-  border-color: transparent;
   color: transparent;
 }
 .default.panel-item > .panel-slider::-ms-fill-lower {
@@ -294,7 +293,7 @@
   color: rgba(255, 255, 255, 0.66);
   font-weight: 300;
   margin: 2px 5px 5px 5px;
-  width: 80%;
+  width: 75%;
 }
 .default > .panel-dir:hover {
   color: white;

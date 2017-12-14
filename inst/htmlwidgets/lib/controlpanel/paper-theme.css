@@ -67,7 +67,7 @@
   width: 100%;
   height: 20px;
   cursor: pointer;
-  background: #edeae1;
+  background: #e2decf;
   border: none;
 }
 .paper.panel-item > .panel-slider::-moz-range-progress {
@@ -84,7 +84,7 @@
   width: 100%;
   height: 20px;
   cursor: pointer;
-  background: #edeae1;
+  background: #e2decf;
   border: none;
 }
 .paper.panel-item > .panel-slider::-ms-track {
@@ -97,7 +97,7 @@
   color: transparent;
 }
 .paper.panel-item-group {
-  background-color: #edeae1;
+  background-color: #e2decf;
   color: rgba(25, 33, 52, 0.66);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   padding: 5px 10px 5px 5px;
@@ -115,7 +115,7 @@
   color: rgba(25, 33, 52, 0.66);
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   box-shadow: rgba(40, 30, 30, 0.45) 0px 0px 5px 0px;
-  border: solid 1px #edeae1;
+  border: solid 1px #e2decf;
   margin: 0;
   display: inline-block;
   font-weight: 200;
@@ -183,7 +183,7 @@
 .paper > .add-content > form > input[type=radio]:checked + label {
   background-color: #192134;
   font-weight: 400;
-  color: #edeae1;
+  color: #e2decf;
 }
 .paper > .add-content > form > input[type=radio] {
   display: none;
@@ -199,7 +199,7 @@
 }
 .paper > .add-content > form > input[type=button]:hover {
   background-color: #192134;
-  color: #edeae1;
+  color: #e2decf;
 }
 .paper > .add-content > form > input[type=button]:active {
   background-color: rgba(25, 33, 52, 0.66);
@@ -216,11 +216,11 @@
 }
 .paper > .add-content > form > input[type=text]:focus {
   outline: none;
-  color: #edeae1;
+  color: #e2decf;
   background-color: #192134;
 }
 .paper > .add-content > form > input[type=text]:active {
-  color: #edeae1;
+  color: #e2decf;
   background-color: #192134;
 }
 .paper > .add-content > form > input[type=text]::-webkit-input-placeholder {
@@ -254,20 +254,20 @@
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input.focus {
   background-color: #192134;
-  color: #edeae1;
+  color: #e2decf;
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input.focus::after {
-  border-color: #edeae1 transparent transparent transparent;
+  border-color: #e2decf transparent transparent transparent;
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input.dropdown-active {
   background-color: #192134;
-  color: #edeae1;
+  color: #e2decf;
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input.dropdown-active::after {
-  border-color: transparent transparent #edeae1 transparent;
+  border-color: transparent transparent #e2decf transparent;
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input > input[type=text] {
-  color: #edeae1;
+  color: #e2decf;
 }
 .paper > .add-content > form > .add-content-selectize > .selectize-input > input[type=text]::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.5);
@@ -283,7 +283,7 @@
   color: rgba(25, 33, 52, 0.66);
   font-weight: 300;
   margin: 2px 5px 5px 5px;
-  width: 80%;
+  width: 75%;
 }
 .paper > .panel-dir:hover {
   color: #192134;
