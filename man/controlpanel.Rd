@@ -4,15 +4,17 @@
 \alias{controlpanel}
 \title{controlpanel}
 \usage{
-controlpanel(opts, factorList = c(), multiSelect = FALSE, width = NULL,
-  height = NULL, elementId = NULL)
+controlpanel(opts, factorList = c(), multiSelect = FALSE,
+  theme = "default", width = NULL, height = NULL, elementId = NULL)
 }
 \arguments{
-\item{opts}{a list of options to give the control panel}
+\item{opts}{A list of options to give the control panel}
 
-\item{factorList}{a character vector of factors that will be made available in the Add Factor dropdown menu}
+\item{factorList}{A character vector of factors that will be made available in the Add Factor dropdown menu}
 
 \item{multiSelect}{TRUE/FALSE if you want the user to be able to select more than one panel at a time}
+
+\item{theme}{Color theme to apply to the control panel.}
 
 \item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
 \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a

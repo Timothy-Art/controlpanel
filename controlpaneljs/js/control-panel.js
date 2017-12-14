@@ -131,7 +131,7 @@ AddPanel.prototype.getNext = function(){
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
-    cancel.className = 'add-cancel far fa-times';
+    cancel.className = 'add-cancel far fa-times fa-fw';
 
     span.appendChild(cancel);
 
@@ -160,7 +160,7 @@ AddPanel.prototype.getNext = function(){
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
-    cancel.className = 'add-cancel far fa-times';
+    cancel.className = 'add-cancel far fa-times fa-fw';
 
     span.appendChild(cancel);
 
@@ -284,7 +284,7 @@ Functions:
   erasePanel(), clearPanels(), selectPanel(), deselectPanel(),
   addGroup(name, parent), updateOptions(name), getOptions()
 ---------------------------------------------------------*/
-function ControlPanel(options, containerId, factorSelections, multiSelect){
+function ControlPanel(options, containerId, factorSelections, multiSelect, theme){
   this.selected = [];
   this.panels = {};
   this.container = containerId;
@@ -295,6 +295,7 @@ function ControlPanel(options, containerId, factorSelections, multiSelect){
   this.groups = {}
   this.ap = new AddPanel();
   this.multiSelect = multiSelect || false;
+  this.theme = theme || 'default';
 
   $("#"+this.container).data({cp: this});
 };
@@ -409,7 +410,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       //console.log('starting html');
       __pos__['html'] = document.createElement('div');
       __pos__['html'].setAttribute('id', __name__[0]);
-      __pos__['html'].className = 'panel-item-group';
+      __pos__['html'].className = 'panel-item-group ' + this.theme;
 
       var title = this.__genName__(__name__);
       __pos__['html'].appendChild(title);
@@ -437,7 +438,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       __pos__['html'].appendChild(reset);
 
       var add = document.createElement('div');
-      add.className = 'panel-item panel-add';
+      add.className = 'panel-item panel-add ' + this.theme;
       add.setAttribute('id', __name__[0]+'-add');
       var icon = document.createElement('i');
       icon.className = 'fal fa-plus-square fa-fw';
@@ -449,10 +450,24 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
     }
 
     if (__iter__[i].Factors !== undefined){
-      this.groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
+      this.groups[__name__[0]][__iter__[i].Name] = {
+        value: __iter__[i].Weight*100*precision,
+        lock: __iter__[i].Locked || false,
+        flipped: __iter__[i].Flipped || false
+      };
       this.groups[__iter__[i].Name] = {};
 
-      __pos__['html'].appendChild(ControlSlider(__iter__[i].Name, true, __iter__[i].Weight, __iter__[i].Locked || false, __iter__[i].Flipped || false, __name__[0]=='Main'));
+      __pos__['html'].appendChild(
+        ControlSlider(
+          __iter__[i].Name,
+          true,
+          __iter__[i].Weight,
+          __iter__[i].Locked || false,
+          __iter__[i].Flipped || false,
+          __name__[0]=='Main',
+          this.theme
+        )
+      );
       __pos__[__iter__[i].Name] = {};
       __name__.unshift(__iter__[i].Name)
       this.buildPanels(__iter__[i].Factors, __pos__[__iter__[i].Name], __name__);
@@ -464,8 +479,22 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
         this.factorSelections.splice(factor, 1);
       };
 
-      this.groups[__name__[0]][__iter__[i].Name] = {value: __iter__[i].Weight*100*precision, lock: __iter__[i].Locked || false, flipped: __iter__[i].Flipped || false};
-      __pos__['html'].appendChild(ControlSlider(__iter__[i].Name, false, __iter__[i].Weight, __iter__[i].Locked || false, __iter__[i].Flipped || false, __name__[0]=='Main'));
+      this.groups[__name__[0]][__iter__[i].Name] = {
+        value: __iter__[i].Weight*100*precision,
+        lock: __iter__[i].Locked || false,
+        flipped: __iter__[i].Flipped || false
+      };
+      __pos__['html'].appendChild(
+        ControlSlider(
+          __iter__[i].Name,
+          false,
+          __iter__[i].Weight,
+          __iter__[i].Locked || false,
+          __iter__[i].Flipped || false,
+          __name__[0]=='Main',
+          this.theme
+        )
+      );
     }
   };
 };
@@ -808,7 +837,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
 
   pointer['html'] = document.createElement('div');
   pointer['html'].setAttribute('id', name);
-  pointer['html'].className = 'panel-item-group';
+  pointer['html'].className = 'panel-item-group ' + this.theme;
 
   //console.log(this.__genNameChain__(name));
   var title = this.__genName__(this.__genNameChain__(name));
@@ -838,7 +867,7 @@ ControlPanel.prototype.addGroup = function(name, parent){
   pointer['html'].appendChild(reset);
 
   var add = document.createElement('div');
-  add.className = 'panel-item panel-add';
+  add.className = 'panel-item panel-add ' + this.theme;
   add.setAttribute('id', name+'-add');
   var icon = document.createElement('i');
   icon.className = 'fal fa-plus-square fa-fw';
@@ -963,7 +992,7 @@ Parameters:
 Returns:
   (String) HTML element of the slider
 ---------------------------------------------------------*/
-function ControlSlider(name, group, weight, locked, flipped, topLevel){
+function ControlSlider(name, group, weight, locked, flipped, topLevel, theme){
   if (group === undefined){
     group = false;
   };
@@ -982,7 +1011,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
 
   slider = document.createElement("div");
   slider.setAttribute("id", name);
-  slider.className = 'panel-item';
+  slider.className = 'panel-item ' + theme;
   slider.className += group ? ' panel-group' : '';
   slider.className += topLevel ? ' panel-top' : '';
 
@@ -992,7 +1021,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute("alt", "Delete");
     div.setAttribute("title", "Delete");
     div.setAttribute('aria-hidden', "true");
-    div.className = 'panel-destroy panel-button-x fas fa-times fa-fw';
+    div.className = 'panel-destroy panel-button-x far fa-times fa-fw';
     //div.appendChild(document.createTextNode("\u2716"));
   }
 
@@ -1004,11 +1033,11 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-flip panel-button'
     if (!flipped){
-      div.className += ' fas fa-plus fa-fw';
+      div.className += ' far fa-plus fa-fw';
       div.setAttribute("alt", "Invert");
       div.setAttribute("title", "Invert");
     } else {
-      div.className += ' fas fa-minus fa-fw';
+      div.className += ' far fa-minus fa-fw';
       div.setAttribute("alt", "Normal");
       div.setAttribute("title", "Normal");
     }
@@ -1023,11 +1052,11 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel){
     div.setAttribute('aria-hidden', "true");
     div.className = 'panel-lock panel-button';
     if (locked){
-      div.className += ' locked fas fa-lock fa-fw'
+      div.className += ' locked far fa-lock fa-fw'
       div.setAttribute("alt", "Unlock");
       div.setAttribute("title", "Unlock");
     } else {
-      div.className += ' fas fa-unlock fa-fw'
+      div.className += ' far fa-unlock fa-fw'
       div.setAttribute("alt", "Lock");
       div.setAttribute("title", "Lock");
     }
@@ -1213,7 +1242,7 @@ Parameters:
   topLevel..........(Boolean) if the new slider is part of
                               the top level
 ---------------------------------------------------------*/
-function addSlider(groups, group, name, isGroup, weight, locked, flipped, topLevel){
+function addSlider(groups, group, name, isGroup, weight, locked, flipped, topLevel, theme){
   if (isGroup === undefined){
     isGroup = false;
   };
@@ -1238,9 +1267,9 @@ function addSlider(groups, group, name, isGroup, weight, locked, flipped, topLev
   var panel = document.getElementById(group)
   if(typeof panel.childNodes[4] === 'undefined'){
     //console.log('blank');
-    panel.appendChild(ControlSlider(name, isGroup, weight, locked, flipped, topLevel));
+    panel.appendChild(ControlSlider(name, isGroup, weight, locked, flipped, topLevel, theme));
   } else {
-    panel.insertBefore(ControlSlider(name, isGroup, weight, locked, flipped, topLevel), panel.childNodes[4]);
+    panel.insertBefore(ControlSlider(name, isGroup, weight, locked, flipped, topLevel, theme), panel.childNodes[4]);
   }
   balanceGroups(groups, group, name, weight*100*precision);
 

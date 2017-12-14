@@ -1,0 +1,547 @@
+// Theme Name
+@theme: paper;
+
+// Panel colors
+@background: #edeae1;
+@foreground: #f2f0ee;
+@accent: #192134;
+@accent-dark: #3a4d78;
+
+// Text colors
+@text: rgba(25,33,52,0.66);
+@text-tint: rgba(25,33,52,0.33);
+@text-active: #192134;
+
+@panel-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+@panel-font-weight: 200;
+@panel-background: @background;
+@panel-color: @text;
+@panel-color-active: @text-active;
+
+@panel-item-background: @foreground;
+@panel-item-border: solid 1px @background;
+@panel-item-shadow: rgba(40,30,30,0.45) 0px 0px 5px 0px;
+@panel-item-color: @text;
+@panel-item-color-active: @text-active;
+
+@panel-button: @text-tint;
+@panel-button-color: @text-active;
+@panel-button-active: @text-active;
+@panel-button-active-color: @background;
+@panel-button-active-tint: @text;
+
+@text-input-border: rgba(255,255,255,0.15);
+@text-input-placeholder: rgba(255,255,255,0.5);
+
+@slider-bar: @accent;
+@slider-thumb: #ff4d94;
+@slider-background: @background;
+@slider-bar-disabled: @accent-dark;
+@slider-thumb-disabled: rgba(255,77,148,0.33);
+@slider-border: none;
+
+@panel-numpad-active: white;
+@panel-numpad-active-color: black;
+
+.@{theme}.panel-item>.panel-slider {
+  -webkit-appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  padding: 0;
+  background: transparent; /* Otherwise white in Chrome */
+  overflow: hidden;
+}
+
+.@{theme}.panel-item>.panel-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+}
+
+.@{theme}.panel-item>.panel-slider:focus {
+  outline: none; /* Removes the blue border. You should probably do some kind of focus styling for accessibility reasons though. */
+}
+
+.@{theme}.panel-item>.panel-slider::-ms-track {
+  width: 100%;
+  cursor: pointer;
+
+  /* Hides the slider so custom styles can be added */
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+
+.@{theme}.panel-item>.panel-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: @slider-thumb;
+  cursor: pointer;
+  margin-top: 0px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
+  box-shadow: -1000px 0 0px 1000px @slider-bar;
+}
+.@{theme}.panel-item>.panel-slider:disabled::-webkit-slider-thumb {
+  box-shadow: -140px 0 0px 140px @slider-bar-disabled;
+  background: @slider-thumb-disabled;
+}
+
+/* All the same stuff for Firefox */
+.@{theme}.panel-item>.panel-slider::-moz-range-thumb {
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: @slider-thumb;
+  border-radius: 0px;
+  cursor: pointer;
+  box-shadow: none;
+}
+.@{theme}.panel-item>.panel-slider:disabled::-moz-range-thumb{
+  background: @slider-thumb-disabled;
+}
+
+/* All the same stuff for IE */
+.@{theme}.panel-item>.panel-slider::-ms-thumb {
+  border: none;
+  height: 20px;
+  width: 5px;
+  background: @slider-thumb;
+  cursor: pointer;
+  box-shadow: none;
+}
+.@{theme}.panel-item>.panel-slider:disabled::-ms-thumb{
+  background: @slider-thumb-disabled;
+}
+
+.@{theme}.panel-item>.panel-slider::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: @slider-background;
+  border: @slider-border;
+}
+
+.@{theme}.panel-item>.panel-slider::-moz-range-progress {
+  cursor: pointer;
+  height: 20px;
+  background-color: @slider-bar;
+  border: none;
+}
+.@{theme}.panel-item>.panel-slider:disabled::-moz-range-progress {
+  background-color: @slider-bar-disabled;
+  border: none;
+}
+
+.@{theme}.panel-item>.panel-slider::-moz-range-track {
+  width: 100%;
+  height: 20px;
+  cursor: pointer;
+  background: @slider-background;
+  border: @slider-border;
+}
+
+.@{theme}.panel-item>.panel-slider::-ms-track {
+  width: 100%;
+  height: 20px;
+  margin-top: -5px;
+  cursor: pointer;
+  border: @slider-border;
+  background: transparent;
+  color: transparent;
+}
+
+.@{theme}.panel-item-group{
+  background-color: @panel-background;
+  color: @panel-color;
+  font-family: @panel-font-family;
+  padding: 5px 10px 5px 5px;
+  width: 100%;
+  max-width: 530px;
+  overflow-y: visible;
+  margin-left: 0px;
+  transition: all 0.2s ease-in-out;
+}
+.@{theme}.panel-item-group.active{
+  margin-left: 0;
+}
+
+.@{theme}.panel-item {
+  background-color: @panel-item-background;
+  color: @panel-item-color;
+  font-family: @panel-font-family;
+  box-shadow: @panel-item-shadow;
+  border: @panel-item-border;
+  margin: 0;
+  display: inline-block;
+  font-weight: 200;
+  font-size: 14px;
+  width: 100%;
+  max-width: 500px;
+  border-radius: 2px;
+  padding: 8px 10px;
+}
+
+.@{theme}.panel-group {
+  border-radius: 2px;
+  margin: 0 !important;
+}
+
+.@{theme}.panel-add {
+  padding: 5px;
+  text-align: center;
+  height: auto;
+}
+
+.@{theme}.panel-add-text {
+  padding: 5px;
+  text-align: center;
+}
+
+.@{theme}.panel-add>.add-content {
+  display: none;
+}
+
+.@{theme}.panel-add-text>.add-content {
+  display: block;
+}
+
+.@{theme}>.add-content {
+  text-align: center;
+  color: @panel-item-color-active;
+  padding: 10px;
+}
+
+.@{theme}>.add-content>.add-cancel {
+  position: relative;
+  float: right;
+  margin: 0 0 0 -20px;
+  padding: 0px;
+  top: -26px;
+  right: -8px;
+  color: @panel-button;
+}
+.@{theme}>.add-content>.add-cancel:hover {
+  cursor: pointer;
+  color: @panel-button-active;
+}
+
+.@{theme}>.add-content>.title {
+  position: relative;
+  font-size: 16px;
+  top: 0;
+}
+
+.@{theme}>.add-content>form {
+  margin: 0;
+  padding: 0;
+}
+
+.@{theme}>.add-content>form>label {
+  cursor: pointer;
+  font-weight: 200;
+  margin: 4px;
+  padding: 5px 10px;
+  border-radius: 1px;
+  color: @panel-button-color;
+  background-color: @panel-button;
+}
+
+.@{theme}>.add-content>form>input[type=radio]:checked + label {
+  background-color: @panel-button-active;
+  font-weight: 400;
+  color: @panel-button-active-color;
+}
+.@{theme}>.add-content>form>input[type=radio] {
+  display: none;
+}
+
+.@{theme}>.add-content>form>input[type=button] {
+  margin: 10px 0 5px -4px;
+  padding: 5px 10px;
+  min-width: 125px;
+  border: none;
+  border-radius: 1px;
+  color: @panel-button-color;
+  background-color: @panel-button;
+}
+.@{theme}>.add-content>form>input[type=button]:hover {
+  background-color: @panel-button-active;
+  color: @panel-button-active-color;
+}
+.@{theme}>.add-content>form>input[type=button]:active {
+  background-color: @panel-button-active-tint;
+}
+.@{theme}>.add-content>form>input[type=button]:focus {
+  outline: none;
+}
+
+.@{theme}>.add-content>form>input[type=text] {
+  border: solid 1px @text-input-border;
+  margin: 5px 0 5px 0px;
+  padding: 5px 10px;
+  color: @panel-button-color;
+  background-color: @panel-button;
+}
+.@{theme}>.add-content>form>input[type=text]:focus {
+  outline: none;
+  color: @panel-button-active-color;
+  background-color: @panel-button-active;
+}
+.@{theme}>.add-content>form>input[type=text]:active {
+  color: @panel-button-active-color;
+  background-color: @panel-button-active;
+}
+.@{theme}>.add-content>form>input[type=text]::-webkit-input-placeholder {
+  color: @text-input-placeholder;
+}
+.@{theme}>.add-content>form>input[type=text]::-moz-placeholder {
+  color: @text-input-placeholder;
+}
+.@{theme}>.add-content>form>input[type=text]::-ms-input-placeholder {
+  color: @text-input-placeholder;
+}
+
+.@{theme}>.add-content>form>.add-content-selectize {
+  position: relative;
+  display: inline;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input {
+  width: 135px;
+  height: 32px;
+  min-height: 0;
+  padding: 5px 10px;
+  transform: translateY(11px);
+  border: solid 1px @text-input-border;
+  border-radius: 0px;
+  background-color: @panel-button;
+  background-image: none;
+  color: @panel-button-color;
+  box-shadow: none;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input::after {
+  border-color: @panel-button transparent transparent transparent;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input.focus {
+  background-color: @panel-button-active;
+  color: @panel-button-active-color;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input.focus::after {
+  border-color: @panel-button-active-color transparent transparent transparent;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input.dropdown-active {
+  background-color: @panel-button-active;
+  color: @panel-button-active-color;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input.dropdown-active::after {
+  border-color: transparent transparent @panel-button-active-color transparent;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input>input[type=text] {
+  color: @panel-button-active-color;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-webkit-input-placeholder {
+  color: @text-input-placeholder;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-moz-placeholder {
+  color: @text-input-placeholder;
+}
+.@{theme}>.add-content>form>.add-content-selectize>.selectize-input>input[type=text]::-ms-input-placeholder {
+  color: @text-input-placeholder;
+}
+
+.@{theme}>.panel-dir {
+  display: inline-block;
+  color: @panel-color;
+  font-weight: 300;
+  margin: 2px 5px 5px 5px;
+  width: 80%;
+}
+.@{theme}>.panel-dir:hover {
+  color: @panel-color-active;
+  cursor: pointer;
+}
+
+.@{theme}>.panel-dir>span {
+  display: inline;
+  color: @panel-color !important;
+}
+.@{theme}>.panel-dir>span:hover {
+  color: @panel-color-active !important;
+}
+
+.@{theme}>.panel-balance {
+  color: @panel-color;
+  position: relative;
+  float: right;
+  padding: 3px 6px;
+}
+.@{theme}>.panel-balance:hover {
+  color: @panel-color-active;
+  cursor: pointer;
+}
+
+.@{theme}.panel-item>.panel-button-x {
+  position: relative;
+  float: right;
+  top: -8px;
+  left: 8px;
+  color: @panel-button;
+  cursor: pointer;
+  background-color: transparent;
+  padding-top: 5px;
+  text-align: center;
+  z-index: 10;
+  font-size: 16px;
+}
+
+.@{theme}.panel-item>.panel-button-x:hover {
+  color: @panel-button-active;
+}
+.@{theme}.panel-item>.panel-button-x:hover.disabled:hover{
+  color: @panel-button;
+}
+
+.@{theme}.panel-item>.panel-button {
+  position: relative;
+  float: right;
+  top: -8px;
+  left: 10px;
+  color: @panel-button;
+  cursor: pointer;
+  background-color: transparent;
+  padding-top: 5px;
+  text-align: center;
+  z-index: 10;
+  font-size: 16px;
+}
+
+.@{theme}.panel-item>.panel-button:hover {
+  color: @panel-button-active;
+}
+.@{theme}.panel-item>.panel-button:hover.disabled:hover{
+  color: @panel-button;
+}
+
+.@{theme}.panel-item>.panel-lock.fa-lock{
+  color: @panel-button-active;
+}
+.@{theme}.panel-item>.panel-select[data-prefix='fas']{
+  color: @panel-button-active;
+}
+.@{theme}.panel-item>.panel-flip.fa-minus{
+  color: @panel-button-active;
+}
+
+.@{theme}.panel-item>label {
+  color: @panel-item-color;
+  position: relative;
+  display: block;
+  text-align: left;
+  z-index: 0;
+  font-weight: 300;
+  margin-left: 5px;
+  padding: 0;
+  overflow: hidden;
+}
+
+.@{theme}.panel-group>label {
+  color: @panel-item-color;
+  text-align: center;
+  font-size: 20px;
+  margin: 10px 0 5px 0px;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+}
+
+.@{theme}>.scroll-label>span {
+  position: relative;
+}
+
+.@{theme}.panel-group>label>.panel-button {
+  display: inline-block;
+  position: relative;
+  width: 100%;
+  font-size: 50px;
+}
+
+.@{theme}.panel-group>label:hover {
+  color: @panel-item-color-active;
+  cursor: pointer;
+}
+
+.@{theme}.panel-add {
+  color: @panel-item-color;
+  cursor: pointer;
+}
+.@{theme}.panel-add>svg {
+  padding: 0px 5px;
+  margin: auto;
+  display: inline-block;
+  font-size: 30px;
+  color: @panel-item-color;
+}
+
+.@{theme}.panel-add:hover>svg {
+  color: @panel-item-color-active;
+}
+
+.@{theme}.panel-add::after {
+  content: "Add";
+  display: inline-block;
+  position: relative;
+  left: -10px;
+  bottom: 3px;
+  height: 1.15em;
+  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+  font-weight: 200;
+  font-size: 18px;
+  color: transparent;
+  overflow: hidden;
+  width: 0;
+  transition: all 0.2s ease-in-out;
+}
+
+.@{theme}.panel-add:hover::after {
+  color: @panel-item-color-active;
+  left: 0px;
+  width: 30px;
+  margin-left: 0px;
+}
+
+.@{theme}.panel-item>.panel-power {
+  float: left;
+  padding: 3px 5px;
+}
+
+.@{theme}.panel-top>.panel-power {
+  display: none;
+}
+
+.@{theme}.panel-item>.panel-slider {
+  display: inline-block;
+  width: ~"-o-calc(100% - 55px)";
+  width: ~"-webkit-calc(100% - 55px)";
+  width: ~"calc(100% - 55px)";
+  margin: 0 8px 10px 5px;
+  float: left;
+}
+
+.@{theme}.panel-top>.panel-slider {
+  display:none;
+}
+
+.@{theme}.panel-item>.slider-num {
+  height: 20px;
+  width: 40px;
+  padding: 0 2px;
+  display:inline-block;
+  background-color: transparent;
+  border: none;
+}
+
+.@{theme}.panel-item>.slider-num:focus {
+  background-color: @panel-numpad-active;
+  color: @panel-numpad-active-color;
+}
+
+.@{theme}.panel-top>.slider-num {
+  display:none;
+}

@@ -7,9 +7,6 @@ library(rjson)
 # Define UI for application that draws a histogram
 ui <- fluidPage(
   useShinyjs(),
-  tags$head(
-    tags$script(src="https://use.fontawesome.com/a222ab71e2.js")
-  ),
   controlpanelOutput('test'),
   textOutput('hello')
 )
@@ -19,7 +16,7 @@ server <- function(input, output, session) {
   opts <- fromJSON(file='options.json')
 
   output$test <- renderControlpanel(
-    controlpanel(opts=opts, factorList = c("Hello", "World"), multiSelect = TRUE)
+    controlpanel(opts=opts, factorList = c("Hello", "World"), multiSelect = TRUE, theme='default')
   )
 
   obj <- eventReactive(input$test_opts, {

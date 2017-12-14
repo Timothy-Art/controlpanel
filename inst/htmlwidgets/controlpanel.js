@@ -16,9 +16,11 @@ HTMLWidgets.widget({
 
         var controls = JSON.parse(x.opts);
         var factors = x.factors;
-        var multiSelect = x.multiSelect
+        var multiSelect = x.multiSelect;
+        var theme = x.theme;
         console.log(factors);
 
+        cp.theme = theme;
         cp.setSelections(factors);
         cp.setControls(controls);
         cp.multiSelect = multiSelect;
