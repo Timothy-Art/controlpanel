@@ -1,6 +1,6 @@
 Package: controlpanel
 Title: Control Panel widget
-Version: 0.4.0
+Version: 0.4.1
 Authors@R: person("Timothy", "Art", role = c("aut", "cre"), email = "timothy@rnfc.org")
 Author: Timothy Art [aut, cre]
 Description: Creates a custom control panel widget for adjusting factor weights and organization.
