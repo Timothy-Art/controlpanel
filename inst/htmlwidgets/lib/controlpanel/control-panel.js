@@ -1534,14 +1534,14 @@ $(document).ready(function(){
   Sets the flipped property of a factor or group
   -------------------------------------------------------*/
   $("body").on("click", ".panel-select", function(e){
-    //console.log(this.id);
+    console.log(this.id);
     var ele = $("#" + this.id);
     var group = this.parentNode.parentNode.id;
     //console.log(group);
     var cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
-    if (ele.attr('data-prefix', 'far')){
+    if (ele.attr('data-prefix') == 'far'){
       cp.selectPanel(ele[0].id.substr(0, ele[0].id.length-7));
     } else {
       cp.deselectPanel(ele[0].id.substr(0, ele[0].id.length-7));
