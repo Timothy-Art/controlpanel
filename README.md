@@ -31,15 +31,21 @@ Each panel can have a combination of both factors and groups, and supports any n
 
 The control panel can also be nested as deep as you would like. However, each layer adds on a level of abstraction, making calculations harder to track.
 
+#### Theming
+
+New themes can be applied to the control panel using the LESS template included. The theme name can be controlled by the @theme variable at the top of the sheet. This name can then be passed to the theme argument in the constructor and will apply your custom styling. 
+
 ## Usage
 
-To create the control panel, call `controlpanel(opts, factorList, multiSelect, ...)`
+To create the control panel, call `controlpanel(opts, factorList, multiSelect, theme, ...)`
 
 `opts` is a list object that provides instructions on how to create the control panel. An example of how this opts list is structured can be found in the example folder.
 
 `factorList` is a vector of factor names for when the user wants to add a new segment. These names will be made available in the add panel, and the control panel will dynamically remove added items from the list so as to not duplicate any segments.
 
 `multiSelect` is a boolean indicating whether multiple selection bubbles can be toggled at once. This defaults to false.
+
+`theme` is the colour scheme you would like to use with the control panel. There are currently two themes implemented: default and paper. Custom themes can be used by compiling a style sheet using the provided LESS and loading the sheet in manually.
 
 ## Shiny
 
