@@ -14,7 +14,7 @@ controlpanel(opts, factorList = c(), multiSelect = FALSE,
 
 \item{multiSelect}{TRUE/FALSE if you want the user to be able to select more than one panel at a time}
 
-\item{theme}{Color theme to apply to the control panel.}
+\item{theme}{Color theme to apply to the control panel. Available themes are 'default' and 'paper'.}
 
 \item{width, height}{Must be a valid CSS unit (like \code{'100\%'},
 \code{'400px'}, \code{'auto'}) or a number, which will be coerced to a

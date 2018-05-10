@@ -1,5 +1,5 @@
-var precision = 1000;
-var topPanels = 3;
+const precision = 1000;
+const topPanels = 3;
 
 /*--ControlSlider(options, containerId)--------------------
 A class containing the html elements for the add panels
@@ -30,9 +30,9 @@ Returns:
   (String) HTML docFrag of radio and label
 ---------------------------------------------------------*/
 AddPanel.prototype.createRadio = function(id, group, value, checked){
-  var docFrag = document.createDocumentFragment();
+  let docFrag = document.createDocumentFragment();
 
-  var radio = document.createElement('input');
+  let radio = document.createElement('input');
   radio.setAttribute('id', id);
   radio.setAttribute('type', 'radio');
   radio.setAttribute('name', group);
@@ -40,7 +40,7 @@ AddPanel.prototype.createRadio = function(id, group, value, checked){
   radio.checked = checked || false;
   docFrag.appendChild(radio);
 
-  var label = document.createElement('label');
+  let label = document.createElement('label');
   label.setAttribute('for', id);
   label.appendChild(document.createTextNode(value));
   docFrag.appendChild(label);
@@ -58,7 +58,7 @@ Returns:
   (String) HTML of text input
 ---------------------------------------------------------*/
 AddPanel.prototype.createText = function(id, value, css){
-  var text = document.createElement('input');
+  let text = document.createElement('input');
   text.setAttribute('id', id);
   text.setAttribute('type', 'text');
   text.setAttribute('placeholder', value);
@@ -77,13 +77,13 @@ Returns:
   (String) HTML of text input
 ---------------------------------------------------------*/
 AddPanel.prototype.createSelect = function(id, value, css){
-  var input = document.createElement('select');
+  let input = document.createElement('select');
   input.setAttribute('id', id);
   input.setAttribute('placeholder', value);
   input.style[Object.keys(css)] = css[Object.keys(css)];
   input.className += 'add-content-selectize';
 
-  var opt = document.createElement('option');
+  let opt = document.createElement('option');
   opt.setAttribute('value', "")
   opt.appendChild(document.createTextNode(value));
   input.appendChild(opt);
@@ -108,7 +108,7 @@ Returns:
   (String) HTML of button
 ---------------------------------------------------------*/
 AddPanel.prototype.createButton = function(id, value){
-  var button = document.createElement('input');
+  let button = document.createElement('input');
   button.setAttribute('id', id);
   button.setAttribute('type', 'button');
   button.setAttribute('name', value);
@@ -124,10 +124,10 @@ Returns:
 ---------------------------------------------------------*/
 AddPanel.prototype.getNext = function(){
   this.current++;
+  let span, cancel, i, form;
   if (this.current == 0){
-    var span = document.createElement('span');
-
-    var cancel = document.createElement('span');
+    span = document.createElement('span');
+    cancel = document.createElement('span');
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
@@ -135,14 +135,14 @@ AddPanel.prototype.getNext = function(){
 
     span.appendChild(cancel);
 
-    var i = document.createElement('div');
+    i = document.createElement('div');
     i.appendChild(document.createTextNode('Add a New Control:'));
     i.className = 'title';
 
     span.appendChild(i);
     span.appendChild(document.createElement('hr'))
 
-    var form  = document.createElement('form');
+    form  = document.createElement('form');
     form.appendChild(this.createRadio('r_1', 'group', 'Group', true));
     form.appendChild(this.createRadio('r_2', 'group', 'Factor'));
     form.appendChild(document.createElement('br'));
@@ -154,9 +154,9 @@ AddPanel.prototype.getNext = function(){
 
     result = this.stage[0];
   } else if (this.current = 1){
-    var span = document.createElement('span')
+    span = document.createElement('span')
 
-    var cancel = document.createElement('span');
+    cancel = document.createElement('span');
     cancel.setAttribute("alt", "Cancel");
     cancel.setAttribute("title", "Cancel");
     cancel.setAttribute('aria-hidden', "true");
@@ -164,7 +164,7 @@ AddPanel.prototype.getNext = function(){
 
     span.appendChild(cancel);
 
-    var i = document.createElement('div');
+    i = document.createElement('div');
     if (this.stage[0].children[3][0].checked){
       i.appendChild(document.createTextNode('Name and Weight:'));
     } else {
@@ -176,11 +176,11 @@ AddPanel.prototype.getNext = function(){
     span.appendChild(i);
     span.appendChild(document.createElement('hr'));
 
-    var form = document.createElement('form');
+    form = document.createElement('form');
     if (this.stage[0].children[3][0].checked){
       form.appendChild(this.createText('f_4', 'Group Name', {width:'135px'}));
     } else {
-      var selInput = this.createSelect('f_4', 'Factor', {width:'135px'})
+      let selInput = this.createSelect('f_4', 'Factor', {width:'135px'})
       //console.log(selInput);
       form.appendChild(selInput);
       $(selInput).selectize({
@@ -208,8 +208,8 @@ Returns:
   (Object) containing the name, weight...
 ---------------------------------------------------------*/
 AddPanel.prototype.getData = function(){
-  var slider = {};
-  var name = this.stage[1].children[3][0].value;
+  let slider = {};
+  let name = this.stage[1].children[3][0].value;
   name = name.replace(/\s+/g, '_');
 
   if (this.stage.length != 2){
@@ -237,7 +237,7 @@ AddPanel.prototype.removeSelf = function(){
     return;
   }
   //console.log('removed');
-  var ele = $($(this.stage[this.current])[0].parentNode);
+  let ele = $($(this.stage[this.current])[0].parentNode);
   ele.animate(
     {height: '45px'},
     {duration: 300,
@@ -249,7 +249,7 @@ AddPanel.prototype.removeSelf = function(){
   $('#'+ele[0].id+'>svg').css({'margin-left': 'inherit'}).animate({opacity: 1}, {duration: 300});
   ele.removeClass('panel-add-text').addClass('panel-add');
 
-  var content = $(this.stage[this.current])
+  let content = $(this.stage[this.current])
   content.remove();
   this.current = -1;
 }
@@ -312,7 +312,7 @@ ControlPanel.prototype.__genName__ = function(names){
   prefix = '';
   span = document.createElement('span');
   span.className = 'panel-dir';
-  for (var i = names.length-1; i >= 0; i--){
+  for (let i = names.length-1; i >= 0; i--){
     span.appendChild(document.createTextNode(prefix));
     chain = document.createElement('span');
     chain.appendChild(document.createTextNode(names[i]));
@@ -341,8 +341,8 @@ ControlPanel.prototype.__genNameChain__ = function(name, __pos__, __panel__, __c
       __chain__ = [];
   };
 
-  var result = false;
-  var keys = Object.keys(__pos__)
+  let result = false;
+  let keys = Object.keys(__pos__)
   //console.log(keys);
   for (i in keys){
     //console.log('key:', keys[i]);
@@ -404,7 +404,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
     this.groups[__name__[0]] = {};
   };
 
-  for (var i = 0; i < __iter__.length; i++){
+  for (let i = 0; i < __iter__.length; i++){
     //console.log(__iter__[i], __pos__);
     if (__pos__['html'] === undefined){
       //console.log('starting html');
@@ -412,35 +412,35 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       __pos__['html'].setAttribute('id', __name__[0]);
       __pos__['html'].className = 'panel-item-group ' + this.theme;
 
-      var title = this.__genName__(__name__);
+      let title = this.__genName__(__name__);
       __pos__['html'].appendChild(title);
 
-      var balance = document.createElement('span');
+      let balance = document.createElement('span');
       balance.setAttribute('alt', 'Balance Factors');
       balance.setAttribute('title', 'Balance Factors');
       balance.setAttribute('id', __name__[0]+'-balance')
       balance.className = 'panel-balance balance-btn';
-      var icon = document.createElement('i');
+      let icon = document.createElement('i');
       icon.className = 'far fa-sliders-h';
       icon.setAttribute('aria-hidden', 'true');
       balance.appendChild(icon);
       __pos__['html'].appendChild(balance);
 
-      var reset = document.createElement('span');
+      let reset = document.createElement('span');
       reset.setAttribute('alt', 'Balance All');
       reset.setAttribute('title', 'Balance All');
       reset.setAttribute('id', 'slider-reset');
       reset.className = 'panel-balance';
-      var icon = document.createElement('i');
+      icon = document.createElement('i');
       icon.className = 'far fa-undo-alt';
       icon.setAttribute('aria-hidden', 'true');
       reset.appendChild(icon);
       __pos__['html'].appendChild(reset);
 
-      var add = document.createElement('div');
+      let add = document.createElement('div');
       add.className = 'panel-item panel-add ' + this.theme;
       add.setAttribute('id', __name__[0]+'-add');
-      var icon = document.createElement('i');
+      icon = document.createElement('i');
       icon.className = 'fal fa-plus-square fa-fw';
       icon.setAttribute('aria-hidden', 'true');
       add.appendChild(icon);
@@ -473,7 +473,7 @@ ControlPanel.prototype.buildPanels = function(__iter__, __pos__, __name__){
       this.buildPanels(__iter__[i].Factors, __pos__[__iter__[i].Name], __name__);
       __name__.shift();
     } else {
-      var factor = __iter__[i].Name;
+      let factor = __iter__[i].Name;
       factor = this.factorSelections.indexOf(factor);
       if (factor >= 0){
         this.factorSelections.splice(factor, 1);
@@ -531,7 +531,7 @@ ControlPanel.prototype.findElement = function(name){
     return(this.controls);
   }
 
-  var pointer = false;
+  let pointer = false;
   //console.log(this.controls);
 
   for (i in this.controls){
@@ -576,7 +576,7 @@ ControlPanel.prototype.findParent = function(name){
     return(pointer);
   };
 
-  var pointer = false;
+  let pointer = false;
   //console.log(this.controls);
 
   for (i in this.controls){
@@ -612,8 +612,8 @@ ControlPanel.prototype.retrievePanel = function(name, __pos__){
     return(this.panels);
   };
 
-  var keys = Object.keys(__pos__);
-  var result = false;
+  let keys = Object.keys(__pos__);
+  let result = false;
   for (i in keys){
     if (keys[i] === name){
       return (__pos__[keys[i]]);
@@ -645,7 +645,7 @@ ControlPanel.prototype.retrieveParent = function(name, __pos__, __pointer__){
     return(false);
   };
 
-  var result = false;
+  let result = false;
   for (i in __pos__){
     if (__pos__[i].Name === name){
       return(this.retrievePanel(__pointer__));
@@ -744,12 +744,13 @@ Parameters:
   silent.............(Boolean) whether to trigger events
 ---------------------------------------------------------*/
 ControlPanel.prototype.selectPanel = function(name, silent){
+  let p;
   if (this.selected.indexOf(name) >= 0){
     return;
   } else if (this.multiSelect) {
     this.selected.push(name);
 
-    var p = this.retrieveParent(name);
+    p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
     p.attr("data-prefix", "fas");
     p.attr("alt", "Deselect");
@@ -759,14 +760,14 @@ ControlPanel.prototype.selectPanel = function(name, silent){
     deselected = this.selected;
     this.selected = [name];
 
-    var p = this.retrieveParent(name);
+    p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
     p.attr("data-prefix", "fas");
     p.attr("alt", "Deselect");
     p.attr("title", "Deselect");
 
 
-    for (var i in deselected){
+    for (let i in deselected){
       p = this.retrieveParent(deselected[i]);
       p = $(p.html.children[deselected[i]].children[3]);
       p.attr("data-prefix", "far");
@@ -795,7 +796,7 @@ ControlPanel.prototype.deselectPanel = function(name, silent){
   } else {
     this.selected.splice(this.selected.indexOf(name), 1);
 
-    var p = this.retrieveParent(name);
+    let p = this.retrieveParent(name);
     p = $(p.html.children[name].children[3]);
     p.attr("data-prefix", "far");
     p.attr("alt", "Select");
@@ -819,14 +820,15 @@ ControlPanel.prototype.addGroup = function(name, parent){
   if (parent === undefined){
     parent = this.current
   }
+  let opts
 
   if (parent === 'Main'){
-    var opts = this.controls
+    opts = this.controls
   } else {
-    var opts = this.findElement(parent).Factors;
+    opts = this.findElement(parent).Factors;
   }
 
-  var pointer = this.retrievePanel(parent);
+  let pointer = this.retrievePanel(parent);
 
   //console.log('before', opts);
   opts.unshift({Factors: [], Name: name, Weight: 0, Flipped: false, Locked: false});
@@ -840,36 +842,39 @@ ControlPanel.prototype.addGroup = function(name, parent){
   pointer['html'].className = 'panel-item-group ' + this.theme;
 
   //console.log(this.__genNameChain__(name));
-  var title = this.__genName__(this.__genNameChain__(name));
+  let title = this.__genName__(this.__genNameChain__(name));
   //console.log(title);
   pointer['html'].appendChild(title);
 
-  var balance = document.createElement('span');
+  let balance = document.createElement('span');
   balance.setAttribute('alt', 'Balance Factors');
   balance.setAttribute('title', 'Balance Factors');
   balance.setAttribute('id', name+'-balance')
   balance.className = 'panel-balance balance-btn';
-  var icon = document.createElement('i');
+
+  let icon = document.createElement('i');
   icon.className = 'far fa-sliders-h';
   icon.setAttribute('aria-hidden', 'true');
   balance.appendChild(icon);
   pointer['html'].appendChild(balance);
 
-  var reset = document.createElement('span');
+  let reset = document.createElement('span');
   reset.setAttribute('alt', 'Balance All');
   reset.setAttribute('title', 'Balance All');
   reset.setAttribute('id', 'slider-reset');
   reset.className = 'panel-balance';
-  var icon = document.createElement('i');
+
+  icon = document.createElement('i');
   icon.className = 'far fa-undo';
   icon.setAttribute('aria-hidden', 'true');
   reset.appendChild(icon);
   pointer['html'].appendChild(reset);
 
-  var add = document.createElement('div');
+  let add = document.createElement('div');
   add.className = 'panel-item panel-add ' + this.theme;
   add.setAttribute('id', name+'-add');
-  var icon = document.createElement('i');
+
+  icon = document.createElement('i');
   icon.className = 'fal fa-plus-square fa-fw';
   icon.setAttribute('aria-hidden', 'true');
   add.appendChild(icon);
@@ -894,28 +899,29 @@ ControlPanel.prototype.updateOptions = function(name, silent){
       return;
     }
   }
+  let pan, opts;
   //console.log(name);
   if (name === "Main"){
-    var opts = this.controls;
-    var pan = this.panels.html;
+    opts = this.controls;
+    pan = this.panels.html;
   } else {
-    var opts = this.findElement(name).Factors;
-    var pan = this.retrievePanel(name).html;
+    opts = this.findElement(name).Factors;
+    pan = this.retrievePanel(name).html;
   }
 
   //console.log('opts', opts);
   //console.log(pan);
 
-  var marked = [];
+  let marked = [];
 
-  for (var i = 0; i < pan.childNodes.length; i++){
+  for (let i = 0; i < pan.childNodes.length; i++){
     if (pan.childNodes[i].classList.contains('panel-item')){
-      var p = pan.childNodes[i].id;
+      let p = pan.childNodes[i].id;
       if (p.substr(p.length-4, p.length) !== '-add'){
         //console.log(p);
-        var poi = -1
+        let poi = -1
 
-        for (var j in opts){
+        for (let j in opts){
           if (opts[j].Name === p){
             poi = j;
           };
@@ -940,7 +946,7 @@ ControlPanel.prototype.updateOptions = function(name, silent){
     };
   };
 
-  var keys = Object.keys(opts);
+  let keys = Object.keys(opts);
   //console.log(marked, keys);
 
   for (i in keys){
@@ -965,7 +971,7 @@ Returns:
   (Object) Options
 ---------------------------------------------------------*/
 ControlPanel.prototype.getOptions = function(){
-  var d = new Date();
+  let d = new Date();
   d.getTime();
 
   return out = {
@@ -1087,7 +1093,7 @@ function ControlSlider(name, group, weight, locked, flipped, topLevel, theme){
       icon.setAttribute('aria-hidden', 'true');
       div.appendChild(icon);
     }
-    var text = document.createElement("span");
+    let text = document.createElement("span");
     text.appendChild(
       document.createTextNode(name)
     );
@@ -1148,11 +1154,11 @@ Parameters:
   group.............(Array) groups names
 ---------------------------------------------------------*/
 function resetGroups(groups, group){
-  var reset = typeof group === "undefined" ? Object.keys(groups) : [group];
+  let reset = typeof group === "undefined" ? Object.keys(groups) : [group];
 
   for (i in reset){
-    var keys = [];
-    var total = 0;
+    let keys = [];
+    let total = 0;
     //console.log('group:', groups[reset[i]])
     for (j in groups[reset[i]]){
       !groups[reset[i]][j].lock ? keys.push(j) : null;
@@ -1160,7 +1166,7 @@ function resetGroups(groups, group){
     }
     //console.log(keys);
 
-    var weight = total/keys.length;
+    let weight = total/keys.length;
     //console.log(weight);
     for (j in keys){
       //console.log(keys[j]);
@@ -1183,28 +1189,28 @@ Returns:
 ---------------------------------------------------------*/
 function balanceGroups(groups, groupName, sliderName, update){
   //console.log(groupName, sliderName, update);
-  var old = groups[groupName][sliderName].value;
+  let old = groups[groupName][sliderName].value;
 
   update = Number(update);
   groups[groupName][sliderName].value = update;
-  var min = 0,
+  let min = 0,
       max = 100*precision;
 
-  var keys = Object.keys(groups[groupName]);
-  var diff_total = 100*precision;
-  for (var i = 0; i < keys.length; i++){
+  let keys = Object.keys(groups[groupName]);
+  let diff_total = 100*precision;
+  for (let i = 0; i < keys.length; i++){
     diff_total -= groups[groupName][keys[i]].value;
   };
-  var index = keys.indexOf(sliderName);
+  let index = keys.indexOf(sliderName);
   //console.log(groups);
   //console.log("diff_total:", diff_total, "index:", index);
 
-  for (var i = 0; i < 2 * keys.length; i++){
+  for (let i = 0; i < 2 * keys.length; i++){
     if (keys[index] != sliderName && !groups[groupName][keys[index]].lock){
-      var slider = $("#"+keys[index]+"-slider");
-      var label = $("#"+keys[index]+"-slider-num")
-      var val = groups[groupName][keys[index]].value;
-      var newVal = Math.floor(diff_total / Math.max(1, keys.length - i));
+      let slider = $("#"+keys[index]+"-slider");
+      let label = $("#"+keys[index]+"-slider-num")
+      let val = groups[groupName][keys[index]].value;
+      let newVal = Math.floor(diff_total / Math.max(1, keys.length - i));
       newVal = Math.min(Math.max(val + newVal, min), max);
       slider.val(newVal/precision);
       label.val(newVal/precision);
@@ -1264,7 +1270,7 @@ function addSlider(groups, group, name, isGroup, weight, locked, flipped, topLev
     groups[group] = {};
   }
   groups[group][name] = {value: weight*100*precision, lock: locked};
-  var panel = document.getElementById(group)
+  let panel = document.getElementById(group)
   if(typeof panel.childNodes[4] === 'undefined'){
     //console.log('blank');
     panel.appendChild(ControlSlider(name, isGroup, weight, locked, flipped, topLevel, theme));
@@ -1363,7 +1369,7 @@ $(document).ready(function(){
   /*-------------------------------------------------------
   Building the initial groups object from the sliders
   -------------------------------------------------------
-  var panels = $('.panel-item-group')
+  let panels = $('.panel-item-group')
   for (i = 0; i < panels.length; i++){
     groups[panels[i].id] = {};
 
@@ -1381,19 +1387,19 @@ $(document).ready(function(){
   Re-balances all unlocked sliders.
   -------------------------------------------------------*/
   $("body").on("click", "#slider-reset", function(e){
-    var cp = this.parentNode.parentNode.id;
+    let cp = this.parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
 
-    var controls = cp.controls;
-    var current = cp.current;
-    var groups = cp.groups;
-    var keys = Object.keys(groups)
-    var poi;
+    let controls = cp.controls;
+    let current = cp.current;
+    let groups = cp.groups;
+    let keys = Object.keys(groups)
+    let poi;
 
     //console.log(keys);
 
     for (i in keys){
-      var temp = keys[i];
+      let temp = keys[i];
       //console.log(temp);
       poi = cp.findElement(temp);
 
@@ -1426,7 +1432,7 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".balance-btn", function(e){
     //console.log('balanced', this.id.substr(0, this.id.length-8));
-    var cp = this.parentNode.parentNode.id;
+    let cp = this.parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
 
     resetGroups(cp.groups, this.id.substr(0, this.id.length-8));
@@ -1437,12 +1443,12 @@ $(document).ready(function(){
   Removes the slider panel.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-destroy", function(e){
-    var ele = this.id.substr(0, this.id.length-8);
-    var group = this.parentNode.parentNode.id;
+    let ele = this.id.substr(0, this.id.length-8);
+    let group = this.parentNode.parentNode.id;
 
-    var cp = $("#"+group)[0].parentNode.id;
+    let cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
-    var keys = Object.keys(cp.groups);
+    let keys = Object.keys(cp.groups);
 
     removeSlider(cp.groups, group, ele);
 
@@ -1458,10 +1464,10 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".panel-lock", function(e){
     //console.log(this.id);
-    var ele = $("#" + this.id);
-    var group = this.parentNode.parentNode.id;
+    let ele = $("#" + this.id);
+    let group = this.parentNode.parentNode.id;
     //console.log(group);
-    var cp = $("#"+group)[0].parentNode.id;
+    let cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
     if (ele.hasClass('locked')){
@@ -1499,10 +1505,10 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".panel-flip", function(e){
     //console.log(this.id);
-    var ele = $("#" + this.id);
-    var group = this.parentNode.parentNode.id;
+    let ele = $("#" + this.id);
+    let group = this.parentNode.parentNode.id;
     //console.log(group);
-    var cp = $("#"+group)[0].parentNode.id;
+    let cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
     if (ele.hasClass('disabled')){
@@ -1535,10 +1541,10 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".panel-select", function(e){
     console.log(this.id);
-    var ele = $("#" + this.id);
-    var group = this.parentNode.parentNode.id;
+    let ele = $("#" + this.id);
+    let group = this.parentNode.parentNode.id;
     //console.log(group);
-    var cp = $("#"+group)[0].parentNode.id;
+    let cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
     if (ele.attr('data-prefix') == 'far'){
@@ -1553,8 +1559,8 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("click", ".panel-add", function(e){
     //console.log(this.id);
-    var ele = $("#"+this.id);
-    var cp = ele[0].parentNode.parentNode.id;
+    let ele = $("#"+this.id);
+    let cp = ele[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
 
     if (ele.attr('disabled')){
@@ -1603,8 +1609,8 @@ $(document).ready(function(){
   Handles when the user hits cancel on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>.add-cancel", function(e){
-    var ele = this;
-    var cp = ele.parentNode.parentNode.parentNode.parentNode.id;
+    let ele = this;
+    let cp = ele.parentNode.parentNode.parentNode.parentNode.id;
     console.log(cp);
     cp = $("#"+cp).data('cp');
     cp.ap.removeSelf();
@@ -1614,15 +1620,15 @@ $(document).ready(function(){
   Handles when the user hits next on the add form.
   -------------------------------------------------------*/
   $("body").on("click", ".add-content>form>input[type=button]", function(e){
-    var ele = $("#"+this.parentNode.parentNode.parentNode.id);
-    var cp = ele[0].parentNode.parentNode.id;
+    let ele = $("#"+this.parentNode.parentNode.parentNode.id);
+    let cp = ele[0].parentNode.parentNode.id;
     //console.log(cp);
     cp = $("#"+cp).data('cp');
     //console.log(cp);
 
     //console.log(ele[0].id);
     if (this.id == 'f_3'){
-      var form = $(cp.ap.getNext());
+      let form = $(cp.ap.getNext());
 
       $('#'+ele[0].id+'>.add-content').remove();
       ele.append(form.css({opacity: 0}));
@@ -1631,7 +1637,7 @@ $(document).ready(function(){
     } else if (this.id == 'f_6'){
       newControl = cp.ap.getData();
       verify = verifyControl(newControl, cp);
-      var errPage = $('#'+ele[0].id+'>.add-content>#add-error');
+      let errPage = $('#'+ele[0].id+'>.add-content>#add-error');
       typeof errPage !== 'undefined' ? errPage.remove() : null;
       if (!verify[0]){
         //console.log(verify);
@@ -1646,13 +1652,13 @@ $(document).ready(function(){
         //console.log(ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
         addSlider(cp.groups, ele[0].id.substr(0, ele[0].id.length-4), newControl.Name,
                   newControl.Factors, newControl.Weight, false, false,
-                  ele[0].id.substr(0, ele[0].id.length-4) == 'Main');
+                  ele[0].id.substr(0, ele[0].id.length-4) == 'Main', cp.theme);
 
         if (newControl.Factors !== undefined){
           //console.log('adding group');
           cp.addGroup(newControl.Name, ele[0].id.substr(0, ele[0].id.length-4));
         } else {
-          var item = cp.factorSelections.indexOf(newControl.Name);
+          let item = cp.factorSelections.indexOf(newControl.Name);
           if (item >= 0){
             cp.factorSelections.splice(item, 1);
           };
@@ -1669,16 +1675,16 @@ $(document).ready(function(){
   Swaps the panel forward to what is in a group.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-group>label", function(e){
-    var ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-13)
-    var cp = $("#"+ele)[0].parentNode.parentNode.id;
+    let ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-13)
+    let cp = $("#"+ele)[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
 
     cp.ap.removeSelf();
 
     $($('#'+ele+'>.scroll-label')[0].lastChild).stop().css({"left": 0});
 
-    var selected = cp.selected;
-    for (var i = selected.length; i >= 0; i--){
+    let selected = cp.selected;
+    for (let i = selected.length; i >= 0; i--){
       cp.deselectPanel(selected[i]);
     };
 
@@ -1687,11 +1693,11 @@ $(document).ready(function(){
 
   $("body").on("mouseenter", ".scroll-label",
   function(e){
-    var label = $(this);
-    var text = $(this.lastChild);
-    var diff = text.width() - label.width();
+    let label = $(this);
+    let text = $(this.lastChild);
+    let diff = text.width() - label.width();
 
-    var animateLabel = function(){
+    let animateLabel = function(){
       text.animate({
         left: "-="+String(diff)
       }, {
@@ -1716,13 +1722,13 @@ $(document).ready(function(){
   directory.
   -------------------------------------------------------*/
   $("body").on("click", ".panel-dir>span", function(e){
-    var ele = $(e.currentTarget)[0].parentNode.parentNode.parentNode.id;
-    var cp = $("#"+ele).data('cp');
+    let ele = $(e.currentTarget)[0].parentNode.parentNode.parentNode.id;
+    let cp = $("#"+ele).data('cp');
 
     cp.ap.removeSelf();
 
-    var selected = cp.selected;
-    for (var i = selected.length; i >= 0; i--){
+    let selected = cp.selected;
+    for (let i = selected.length; i >= 0; i--){
       cp.deselectPanel(selected[i]);
     };
     //console.log(e.currentTarget.innerHTML);
@@ -1734,13 +1740,13 @@ $(document).ready(function(){
   sliders in the group.
   -------------------------------------------------------*/
   $("body").on("input", ".panel-slider", function(e){
-    var ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-7)
+    let ele = e.currentTarget.id.substr(0, e.currentTarget.id.length-7)
     //console.log(ele);
-    var cp = $("#"+ele)[0].parentNode.parentNode.id;
+    let cp = $("#"+ele)[0].parentNode.parentNode.id;
     cp = $("#"+cp).data('cp');
     //console.log(e);
-    var group = this.parentNode.parentNode.id;
-    var label = $('#' + e.target.id + '-num');
+    let group = this.parentNode.parentNode.id;
+    let label = $('#' + e.target.id + '-num');
     label.val(this.value);
 
     silent = balanceGroups(cp.groups, group, e.target.id.substr(0, e.target.id.length-7), Number(this.value)*precision);
@@ -1763,7 +1769,7 @@ $(document).ready(function(){
       $(this).trigger('change');
     } else if (e.keyCode === 190){
       if (this.value.indexOf('.') === -1){
-        var cursor = this.selectionStart;
+        let cursor = this.selectionStart;
         this.value = this.value.slice(0, cursor) + '.' + this.value.slice(cursor);
         this.selectionStart = cursor+1;
         this.selectionEnd = cursor+1;
@@ -1784,11 +1790,11 @@ $(document).ready(function(){
   -------------------------------------------------------*/
   $("body").on("change", ".slider-num", function(e){
     //console.log(Number(this.value));
-    var group = this.parentNode.parentNode.id;
-    var slider = $('#' + e.target.id.substr(0, e.target.id.length-4));
-    var value = Math.min(100, Number(this.value))*precision;
+    let group = this.parentNode.parentNode.id;
+    let slider = $('#' + e.target.id.substr(0, e.target.id.length-4));
+    let value = Math.min(100, Number(this.value))*precision;
 
-    var cp = $("#"+group)[0].parentNode.id;
+    let cp = $("#"+group)[0].parentNode.id;
     cp = $("#"+cp).data('cp');
 
     slider.val(value/precision);
